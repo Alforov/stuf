@@ -17,8 +17,6 @@ public class PlayWithRemote{
         onPressed.press();
         onPressed.pressUndo();
 
-        BigDecimal bigDecimal = new BigDecimal("22.1");
-        System.out.println(new BigDecimal("0").subtract(bigDecimal));
 
        /* TurnTVOff offCommand = new TurnTVOff(newDevice);
         onPressed = new DeviceButton(offCommand);
