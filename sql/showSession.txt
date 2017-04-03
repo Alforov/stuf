@@ -1,0 +1,4 @@
+SELECT o.object_name,l.*, s.*
+  FROM v$locked_object l, dba_objects o, v$session s
+ WHERE l.object_id = o.object_id
+   AND l.session_id = s.sid(+)
