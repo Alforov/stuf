@@ -1,1 +1,2 @@
 clone specific branch -->  git clone -b my-branch http://gitlab/ifobs/ifobs.git
+set autologin -> git config credential.helper store
