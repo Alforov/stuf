@@ -1,3 +1,4 @@
 https://www.javacodegeeks.com/2014/11/multithreading-concurrency-interview-questions-answers.html
 http://javarevisited.blogspot.com/2015/07/how-to-use-wait-notify-and-notifyall-in.html?m=1
 https://www.ibm.com/developerworks/ru/library/j-jtp10264/
+https://www.ibm.com/developerworks/java/library/j-5things4/index.html
