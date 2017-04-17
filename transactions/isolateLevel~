@@ -1,3 +1,4 @@
+For example, you have 3 concurrent process A, B and C. A starts a transaction, writes data and commit/rollback (depending on results). B just executes a SELECT statement to read data. C reads and updates data. All these process work on same table T.
 
 
 Dirty read: The meaning of this term is as bad as it sounds. You're permitted to read uncommitted, or dirty , data. You can achieve this effect by just opening an OS file that someone else is writing and reading whatever data happens to be there. Data integrity is compromised, foreign keys are violated, and unique constraints are ignored.

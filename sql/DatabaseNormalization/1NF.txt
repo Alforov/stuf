@@ -1,18 +1,8 @@
+1st Normal Form Definition
 
-Сотрудник	      Номер телефона
-Иванов И. И.	  283-56-82
-                  390-57-34
-				  
-Петров П. П.	  708-62-34
+A database is in first normal form if it satisfies the following conditions:
 
-после нормализации
-
-
-Сотрудник	    Номер телефона
-Иванов И. И.	283-56-82
-Иванов И. И.	390-57-34
-Петров П. П.	708-62-34
-
-   
+Contains only atomic values
+There are no repeating groups
    
    

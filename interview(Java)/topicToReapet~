@@ -1,0 +1,30 @@
+SQL
+structured query language
+
+DDL data definition language
+create, alter, drop
+
+DML data manipulation language
+select, instert, update, delete
+
+TCL transaction control language
+commit
+rollback
+savepoint
+
+DCL data control language
+grant 
+revoke
+deny
+
+sql index
+joins 
+sub query
+
+
+
+join
+select w.name, count(b.id) from writers w left join books b on w.id = b.writer_id group by w.name;
+select w.name, count(b.id) from writers w left join books b on w.id = b.writer_id group by w.name having count(b.id)>2
+
+
