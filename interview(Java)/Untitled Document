@@ -1,0 +1,22 @@
+C 2014 занимаюсь разработкой програмного обеспечения для банковского сектора. 
+В мои обязаности входила как разроботка новых модулей приложений, так и поддежка существующих.
+Были произведены интеграции с несколькими card processing, а так же интеграция с провайдерами 
+комунальных услуг. Из протоколов изпользовался в основном soap, хотя rest тоже встречался.
+Сами модули были написаны либо с помощью EJB либо Spring контейнеров. В проектах активно исползован 
+framework spring integration. Из UI frameworks есть опыт работы с GWT, данный framework использован в 
+наших модулей для создания консолей администрирования.
+Связь с DB осуществлялась либо с помощью Spring JdbcTemplate либо Hibernate либо native JDBC.
+Modules were written on java and groovy languages. For building were used maven, ant and gradle.
+Последний проект был написан для ibm esb, поэтому есть опыт разработки с помощью ibm integration toolkit
+
+Since 2014 I am engaged in the development of software for the banking sector.
+In my duties included both the development of new application modules, and the support of existing ones.
+Integration with several card processing, as well as integration with providers
+Communal services. Of the protocols used mainly  soap, although rest also met.
+Modules were written either using EJB or Spring containers. The projects are actively used
+Framework spring integration. From UI frameworks there is experience with GWT, this framework is used in
+Our modules for creating administration consoles.
+Communication with DB was carried out either with the help of Spring JdbcTemplate or Hibernate or native JDBC.
+Modules were written on java and groovy languages. For building were used maven, ant and gradle.
+The last project was written for ibm esb, so there is a development experience with the ibm integration toolkit
+
