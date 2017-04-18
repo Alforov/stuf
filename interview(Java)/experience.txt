@@ -9,7 +9,9 @@ Version Control System:
 Programming languages
  Java основной
  groovy дополнительный
-
-
+Frameworks
+EJB, Spring, Spring Integration,IBM ESB, GWT
+DB
+Oracle 11
 
  
