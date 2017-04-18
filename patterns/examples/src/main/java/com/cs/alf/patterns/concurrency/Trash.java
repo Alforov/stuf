@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Trash {
     public static void main(String[] args) {
+        System.out.println(Integer.MAX_VALUE);
+        Integer integer = Integer.valueOf("26001306255838");
         try {
             TimeUnit.MINUTES.sleep(1);
         } catch (InterruptedException e) {
