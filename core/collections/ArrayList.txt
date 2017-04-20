@@ -1,0 +1,17 @@
+ArrayList
+add O(1)
+get O(1)
+remove O(N)
+contains O(N)
+
+LinkedList
+add O(1)
+get O(n)
+remove O(1)
+conatins O(n)
+
+HashMap
+add O(1)
+get O(1)
+remove O(1)
+в худшем случаи lg N
