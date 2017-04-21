@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/ -->
+<html dir="ltr" lang="en-CA" class="gr__howtoprogramwithjava_com" style="min-height: 100%;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/css.css" media="screen, projection">
+<title>Hibernate Eager vs Lazy Fetch Type – How to Program with Java</title>
+<meta name="description" content="The topic of Fetch types in Hibernate is a fairly advanced topic, as it requires you to have a decent understanding of the Java programming language, as we">
+<meta name="robots" content="noodp, noydir">
+<link rel="canonical" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/">
+<link rel="alternate" type="application/rss+xml" title="How to Program with Java feed" href="https://howtoprogramwithjava.com/feed/">
+<link rel="pingback" href="https://howtoprogramwithjava.com/xmlrpc.php">
+<script type="text/javascript" async="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/proof.js"></script><script async="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/analytics.js"></script><script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/737386116300151" async=""></script><script async="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/fbevents.js"></script><script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/8720.js" async="" type="text/javascript"></script><script type="text/javascript" async="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/5a979d3a5609686076226439ad0f3da8.js"></script><script type="text/javascript">
+    (function(p,u,s,h){
+        p._pcq=p._pcq||[];
+        p._pcq.push(['_currentTime',Date.now()]);
+        s=u.createElement('script');
+        s.type='text/javascript';
+        s.async=true;
+        s.src='https://cdn.pushcrew.com/js/5a979d3a5609686076226439ad0f3da8.js';
+        h=u.getElementsByTagName('script')[0];
+        h.parentNode.insertBefore(s,h);
+    })(window,document);
+</script>
+
+<!-- Proof | Real-time conversion signals -->
+<script id="proof-script">!function(){function b(){var a=(new Date).getTime(),b=document.createElement('script');b.type='text/javascript',b.async=!0,b.src='https://cdn.getmoreproof.com/embed/latest/proof.js?'+a;var c=document.getElementsByTagName('script')[0];c.parentNode.insertBefore(b,c)}var a=window;a.attachEvent?a.attachEvent('onload',b):a.addEventListener('load',b,!1),window.proof_config={acc:'5InWSUMHYJciIN1NdndGXXv2C7m1', v:'1.1'}}()</script>
+<!-- End Proof -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//script.crazyegg.com/pages/scripts/0063/8720.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- This site is optimized with the Yoast SEO plugin v4.6 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="It&#39;s time for you to stop using the Eager fetch type and stop slowing down your application. Here you&#39;ll learn how to use the Lazy loading fetch type.">
+<meta name="robots" content="noodp">
+<link rel="canonical" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate Eager vs Lazy Fetch Type - How to Program with Java">
+<meta property="og:description" content="It&#39;s time for you to stop using the Eager fetch type and stop slowing down your application. Here you&#39;ll learn how to use the Lazy loading fetch type.">
+<meta property="og:url" content="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/">
+<meta property="og:site_name" content="How to Program with Java">
+<meta property="article:tag" content="eager loading">
+<meta property="article:tag" content="fetch type">
+<meta property="article:tag" content="hibernate">
+<meta property="article:tag" content="lazy loading">
+<meta property="article:section" content="Advanced Tips">
+<meta property="article:published_time" content="2013-10-25T10:39:49-04:00">
+<meta property="article:modified_time" content="2016-05-24T13:10:47-04:00">
+<meta property="og:updated_time" content="2016-05-24T13:10:47-04:00">
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="How to Program with Java » Hibernate Eager vs Lazy Fetch Type Comments Feed" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/feed/">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/wp-syntax.css" type="text/css" media="all">
+<link rel="stylesheet" id="easy_table_style-css" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/style.css" type="text/css" media="all">
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/jquery.js"></script>
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/jquery-migrate.min.js"></script>
+<link rel="https://api.w.org/" href="https://howtoprogramwithjava.com/wp-json/">
+<link rel="alternate" type="application/json+oembed" href="https://howtoprogramwithjava.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fhowtoprogramwithjava.com%2Fhibernate-eager-vs-lazy-fetch-type%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://howtoprogramwithjava.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fhowtoprogramwithjava.com%2Fhibernate-eager-vs-lazy-fetch-type%2F&amp;format=xml">
+	<link href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/SyntaxHighlighter.css" type="text/css" rel="stylesheet">
+	<script data-cfasync="false" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource" data-sumo-platform="wordpress" data-sumo-site-id="4466108a05107c4190a6031468638739da32252cb2dbe3b510cc176275577fb2" async=""></script>
+<!--BEGIN: TRACKING CODE MANAGER BY INTELLYWP.COM IN HEAD//-->
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','//connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '737386116300151');
+fbq('track', "PageView");</script>
+<noscript>&lt;img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=737386116300151&amp;ev=PageView&amp;noscript=1"
+/&gt;</noscript>
+<!-- End Facebook Pixel Code -->
+<!--END: https://wordpress.org/plugins/tracking-code-manager IN HEAD//-->
+<!-- BEGIN GADWP v4.9.6.2 Universal Tracking - https://deconf.com/google-analytics-dashboard-wordpress/ -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-33394592-1', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script>
+
+<!-- END GADWP Universal Tracking -->
+
+<link rel="shortcut icon" href="https://htpwj-zone1-rrzzqutxbqkmxn.netdna-ssl.com/wp-content/uploads/2017/04/favicon.ico">
+<script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/can-i-show.js"></script><script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/can-i-show.js"></script><script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/can-i-show(1).js"></script><link rel="manifest" href="https://howtoprogramwithjava.com/manifest.json?t=1492807587261"><link type="text/css" rel="stylesheet" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/https-v4.css"><link rel="stylesheet" type="text/css" media="all" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/proof.css"><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="156085c5-0017-4150-b225-a731ad248f38/service" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/service.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="4802de2d-b003-4fc4-8d07-901abb51e683/service" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/service(1).js"></script><style>@-webkit-keyframes insQ_100 {  from {  outline: 1px solid transparent  } to {  outline: 0px solid transparent }  }
+#menufication-top { animation-duration: 0.001s; animation-name: insQ_100; -webkit-animation-duration: 0.001s; -webkit-animation-name: insQ_100;  } </style><link type="text/css" rel="stylesheet" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/sumome-welcome-popup.css"><link type="text/css" rel="stylesheet" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/listbuilder-popup.css"><link type="text/css" rel="stylesheet" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/sme-popup.css"></head>
+<div class="gr-top-z-index gr-top-zero" tabindex="-1" style=""><div data-reactroot="" class="_970ef1-hoverMenu"><div class="_970ef1-panel"><div class="_970ef1-tooltip _970ef1-tooltip_hidden undefined"></div><div class="_970ef1-buttonArea"><div class="_970ef1-btn _970ef1-btn_disable" tabindex="-1"></div></div><div class="_970ef1-line"></div><div class="_970ef1-buttonArea"><div class="_970ef1-btn _970ef1-btn_grammarly" data-action="editor" tabindex="-1"></div></div></div></div></div><div style="visibility: hidden; top: -9999px; position: absolute; opacity: 0;"><div data-reactroot="" class="_970ef1-hoverMenu"><div class="_970ef1-panel"><div class="_970ef1-tooltip _970ef1-tooltip_hidden undefined"></div><div class="_970ef1-buttonArea"><div class="_970ef1-btn _970ef1-btn_disable" tabindex="-1"></div></div><div class="_970ef1-line"></div><div class="_970ef1-buttonArea"><div class="_970ef1-btn _970ef1-btn_grammarly" data-action="editor" tabindex="-1"></div></div></div></div></div><body class="template-single spp" data-gr-c-s-loaded="true" style="padding-top: 27px !important; margin-top: 0px !important;">
+<div class="container">
+	<div id="header" class="header">
+<a href="https://howtoprogramwithjava.com/"><img id="thesis_header_image" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/Coders_Campus_Java.png" alt="How to Program with Java header image" width="1030" height="130" title="click to return home"></a>
+	</div>
+	<span class="menu_control">≡ Menu</span>
+<ul id="menu-main-menu" class="menu"><li id="menu-item-2526" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-2526"><a href="https://howtoprogramwithjava.com/">Home</a></li>
+<li id="menu-item-2527" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2527"><a href="https://howtoprogramwithjava.com/about-me/">Trevor Page</a></li>
+<li id="menu-item-2528" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2528"><a href="https://howtoprogramwithjava.com/java-podcast">Podcast</a></li>
+<li id="menu-item-2529" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2529"><a href="https://howtoprogramwithjava.com/reviews/">Reviews</a></li>
+<li id="menu-item-3262" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3262"><a href="https://coderscampus.proffesso.com/">Products</a></li>
+<li id="menu-item-3200" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3200"><a href="http://app.webinarjam.net/register/12137/49e1883d6e">Free Workshops</a>
+<ul class="sub-menu">
+	<li id="menu-item-3198" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3198"><a href="http://app.webinarjam.net/register/12137/10900fb6dc">Your First Java App</a></li>
+	<li id="menu-item-3199" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3199"><a href="http://app.webinarjam.net/register/12137/49e1883d6e">Create a Java Web App from Scratch</a></li>
+</ul>
+</li>
+</ul>
+	<div class="columns">
+		<div class="content">
+			<div id="post-1988" class="post_box grt top" itemscope="" itemtype="http://schema.org/Article">
+				<div class="headline_area">
+					<h1 class="headline" itemprop="name">Hibernate Eager vs Lazy Fetch Type</h1>
+					<div class="byline small">
+						<span class="post_author_intro">by</span> <span class="post_author" itemprop="author">Trevor Page</span>
+						<meta itemprop="datePublished" content="2013-10-25">
+						<meta itemprop="dateModified" content="2016-05-24">
+						<span class="post_date_intro">on</span> <span class="post_date" title="2013-10-25">October 25, 2013</span>
+					</div>
+				</div>
+				<div class="post_content" itemprop="articleBody">
+<div typeof="schema:BlogPosting"><div class="smart-track-player stp-color-e7741b-EEEEEE" style="background-color: rgb(238, 238, 238);">
+
+<div class="spp-track-layer-0">
+</div>
+
+<div class="spp-track-layer-1">
+	
+	<div class="spp-playback-controls">
+		<div class="spp-play-pause">
+			<div class="spp-control spp-play" aria-label="Play" tabindex="0">
+				<div class="spp-play-bar spp-play-bar-left"></div>
+				<div class="spp-play-bar spp-play-bar-right"></div>
+				<div class="spp-play-mask spp-play-mask-top"></div>
+				<div class="spp-play-mask spp-play-mask-bottom"></div>
+			</div>
+		</div>
+		<div class="spp-playback-controls-2">
+			
+				
+					<div class="spp-speed">
+						<svg xmlns="http://www.w3.org/2000/svg" class="spp-control spp-speed-half" tabindex="0" aria-labelledby="spp-svg-title-half-speed" role="img" viewBox="0 0 32 32">
+  <title id="spp-svg-title-half-speed">Speed: 50%</title>
+  <path id="_.5X" data-name=".5X" d="M32,112A16,16,0,1,1,4.21,101.21l2.121,2.121A12.995,12.995,0,1,0,17,99.051V104H14V96h3v0.05A15.987,15.987,0,0,1,32,112ZM8.058,117.211a0.65,0.65,0,0,0,.5.182,0.669,0.669,0,0,0,.508-0.182,0.628,0.628,0,0,0,.173-0.451,0.665,0.665,0,0,0-.173-0.469A0.657,0.657,0,0,0,8.56,116.1a0.638,0.638,0,0,0-.5.187,0.678,0.678,0,0,0-.167.469A0.64,0.64,0,0,0,8.058,117.211Zm3.832-3.937,0.288-.235a1.792,1.792,0,0,1,1.115-.31,1.587,1.587,0,0,1,1.241.518A1.978,1.978,0,0,1,15,114.621a2.154,2.154,0,0,1-.431,1.424,1.466,1.466,0,0,1-1.188.516,1.626,1.626,0,0,1-1.115-.372,1.722,1.722,0,0,1-.522-1.1H10.716a2.5,2.5,0,0,0,.816,1.734,2.7,2.7,0,0,0,1.849.627,2.6,2.6,0,0,0,1.992-.758,2.914,2.914,0,0,0,.713-2.078,3.018,3.018,0,0,0-.687-2.083,2.361,2.361,0,0,0-1.854-.77,2.761,2.761,0,0,0-1.426.369l0.258-2.326h3.457v-1H11.456l-0.434,4.254Zm6.763-4.477h-1.32l2.705,4.23-2.77,4.3H18.6L20.713,114l2.1,3.328h1.338l-2.764-4.3,2.7-4.23H22.761l-2.048,3.269Z" transform="translate(0 -96)"></path>
+</svg>
+
+						<svg xmlns="http://www.w3.org/2000/svg" class="spp-control spp-speed-one" tabindex="0" aria-labelledby="spp-svg-title-normal-speed" role="img" viewBox="0 0 32 32">
+  <title id="spp-svg-title-normal-speed">Speed: Normal</title>
+  <path id="_1X" data-name="1X" d="M72,112a16,16,0,1,1-27.79-10.79l2.121,2.121A12.995,12.995,0,1,0,57,99.051V104H54V96h3v0.05A15.987,15.987,0,0,1,72,112Zm-19.737-3h-0.17l-3.11,1.166v0.984l2.189-.8v7.224h1.092V109Zm4.431,0.041H55.373l2.705,4.231-2.77,4.3h1.332l2.113-3.328,2.1,3.328h1.338l-2.764-4.3,2.7-4.231H60.8l-2.048,3.27Z" transform="translate(-40 -96)"></path>
+</svg>
+
+						<svg xmlns="http://www.w3.org/2000/svg" class="spp-control spp-speed-onehalf" tabindex="0" aria-labelledby="spp-svg-title-1p5-speed" role="img" viewBox="0 0 32 32">
+  <title id="spp-svg-title-1p5-speed">Speed: 150%</title>
+  <path id="_1.5X" data-name="1.5X" d="M112,112a16,16,0,1,1-27.79-10.79l2.121,2.121A12.995,12.995,0,1,0,97,99.051V104H94V96h3v0.05A15.988,15.988,0,0,1,112,112Zm-22.284-2.254H89.589l-2.333.874v0.739l1.642-.6v5.418h0.819v-6.429Zm2.218,6.341a0.486,0.486,0,0,0,.376.136,0.5,0.5,0,0,0,.381-0.136,0.471,0.471,0,0,0,.13-0.338,0.5,0.5,0,0,0-.13-0.352,0.491,0.491,0,0,0-.381-0.14,0.477,0.477,0,0,0-.376.14,0.51,0.51,0,0,0-.125.352A0.48,0.48,0,0,0,91.935,116.087Zm3.107-2.953,0.216-.176a1.346,1.346,0,0,1,.836-0.233,1.192,1.192,0,0,1,.931.389,1.483,1.483,0,0,1,.35,1.031,1.616,1.616,0,0,1-.323,1.068,1.1,1.1,0,0,1-.891.386,1.219,1.219,0,0,1-.836-0.279,1.29,1.29,0,0,1-.392-0.828h-0.77a1.877,1.877,0,0,0,.612,1.3,2.03,2.03,0,0,0,1.386.47,1.952,1.952,0,0,0,1.494-.569,2.186,2.186,0,0,0,.535-1.558,2.262,2.262,0,0,0-.515-1.562A1.767,1.767,0,0,0,96.283,112a2.067,2.067,0,0,0-1.07.277l0.194-1.745H98v-0.751H94.716l-0.326,3.19Zm5.014-3.357h-0.99l2.029,3.172-2.078,3.226h1l1.585-2.5,1.575,2.5h1l-2.073-3.226,2.024-3.172h-0.994l-1.536,2.452Z" transform="translate(-80 -96)"></path>
+</svg>
+
+						<svg xmlns="http://www.w3.org/2000/svg" class="spp-control spp-speed-two" tabindex="0" aria-labelledby="spp-svg-title-double-speed" role="img" viewBox="0 0 32 32">
+  <title id="spp-svg-title-double-speed">Speed: Double</title>
+  <path id="_2X" data-name="2X" d="M152,112a16,16,0,1,1-27.79-10.79l2.121,2.121A12.995,12.995,0,1,0,137,99.051V104h-3V96h3v0.05A15.988,15.988,0,0,1,152,112Zm-17.334,4.43h-4.29l2.289-2.478a4.877,4.877,0,0,0,1.608-3,2.125,2.125,0,0,0-.693-1.661,2.707,2.707,0,0,0-1.883-.624,2.823,2.823,0,0,0-2.034.726,2.514,2.514,0,0,0-.76,1.905h1.086a1.759,1.759,0,0,1,.449-1.281,1.681,1.681,0,0,1,1.259-.46,1.417,1.417,0,0,1,1.079.428,1.529,1.529,0,0,1,.405,1.1,2.021,2.021,0,0,1-.249.964,7.034,7.034,0,0,1-.907,1.21l-2.957,3.281v0.779h5.6V116.43Zm2.953-7.646H136.3l2.7,4.23-2.77,4.3h1.332l2.113-3.328,2.1,3.328h1.338l-2.764-4.3,2.7-4.23h-1.326l-2.048,3.269Z" transform="translate(-120 -96)"></path>
+</svg>
+
+						<svg xmlns="http://www.w3.org/2000/svg" class="spp-control spp-speed-three" tabindex="0" aria-labelledby="spp-svg-title-triple-speed" role="img" viewBox="0 0 32 32">
+  <title id="spp-svg-title-triple-speed">Speed: Triple</title>
+  <path id="_3X" data-name="3X" d="M192,112a16,16,0,1,1-27.79-10.79l2.121,2.121A12.995,12.995,0,1,0,177,99.051V104h-3V96h3v0.05A15.988,15.988,0,0,1,192,112Zm-21.289,1.662h0.816a1.994,1.994,0,0,1,1.32.41,1.432,1.432,0,0,1,.458,1.143,1.577,1.577,0,0,1-.417,1.177,1.639,1.639,0,0,1-1.2.41,1.671,1.671,0,0,1-1.179-.4,1.39,1.39,0,0,1-.44-1.078h-1.092a2.159,2.159,0,0,0,.754,1.717,2.893,2.893,0,0,0,1.957.65,2.815,2.815,0,0,0,1.955-.674,2.327,2.327,0,0,0,.751-1.822,2.045,2.045,0,0,0-.385-1.26,2.106,2.106,0,0,0-1.088-.738,2.182,2.182,0,0,0,.983-0.779,1.876,1.876,0,0,0,.361-1.078,2.306,2.306,0,0,0-.687-1.776,3.059,3.059,0,0,0-3.782.033,2.173,2.173,0,0,0-.743,1.684h1.086a1.4,1.4,0,0,1,.42-1.063,1.555,1.555,0,0,1,1.124-.4,1.324,1.324,0,0,1,1.5,1.5,1.351,1.351,0,0,1-.44,1.061,1.8,1.8,0,0,1-1.209.4h-0.816v0.885Zm6.372-4.623h-1.32l2.7,4.23-2.77,4.3h1.332l2.113-3.328,2.1,3.328h1.338l-2.764-4.3,2.7-4.23h-1.326l-2.048,3.269Z" transform="translate(-160 -96)"></path>
+</svg>
+
+					</div>
+				
+			
+			<div class="spp-step-back">
+				<svg xmlns="http://www.w3.org/2000/svg" class="spp-control" tabindex="0" aria-labelledby="spp-svg-title-back-15" role="img" viewBox="0 0 76.344 44">
+  <title id="spp-svg-title-back-15">Back 15 seconds</title>
+  <path id="RW_15" d="M36.645,62.008H36.318L31,64.289v1.927l3.566-1.571V78.784h2.074V62.008Zm7.418,8.841,0.548-.539a2.444,2.444,0,0,1,1.643-.528,2.284,2.284,0,0,1,1.963,1.032,4.533,4.533,0,0,1,.728,2.672,4.978,4.978,0,0,1-.676,2.769,2.129,2.129,0,0,1-1.876,1.026,2.208,2.208,0,0,1-1.719-.728,3.854,3.854,0,0,1-.833-2.161H41.907a5.286,5.286,0,0,0,1.375,3.394,4.573,4.573,0,0,0,6.485-.252A6.182,6.182,0,0,0,51,73.463a6.653,6.653,0,0,0-1.13-4.071,3.669,3.669,0,0,0-3.111-1.514,3.908,3.908,0,0,0-2.261.722l0.4-4.552h5.64V62.088H43.153l-0.734,8.325ZM75,73A33,33,0,0,0,9,73h4.67l-6,8-6-8H6a36,36,0,0,1,72,0H75Z" transform="translate(-1.656 -37)"></path>
+</svg>
+
+			</div>
+			<div class="spp-step-forward">
+				<svg xmlns="http://www.w3.org/2000/svg" class="spp-control" tabindex="0" aria-labelledby="spp-svg-title-forward-60" role="img" viewBox="0 0 76.344 44">
+  <title id="spp-svg-title-forward-60">Forward 60 seconds</title>
+  <path id="FF-60" d="M185.75,62.229a6.816,6.816,0,0,0-3.714,1.017,6,6,0,0,0-2.261,3.006,15.677,15.677,0,0,0-.768,5.432V72.49a7.977,7.977,0,0,0,1.276,4.739,3.949,3.949,0,0,0,3.365,1.784,4.057,4.057,0,0,0,3.313-1.511,6.32,6.32,0,0,0,1.234-4.114,6.47,6.47,0,0,0-1.116-3.949,3.561,3.561,0,0,0-3.017-1.506,3.631,3.631,0,0,0-2.929,1.386,6.42,6.42,0,0,1,1.358-3.949,4.31,4.31,0,0,1,3.271-1.358H186.1V62.229H185.75Zm-0.271,8.517a5.133,5.133,0,0,1,.661,2.744,5.06,5.06,0,0,1-.661,2.744,2.063,2.063,0,0,1-1.831,1.04,2.121,2.121,0,0,1-1.812-1.267,6.448,6.448,0,0,1-.739-3.278V71.9a3.519,3.519,0,0,1,1.04-1.591,2.347,2.347,0,0,1,1.57-.625A2.01,2.01,0,0,1,185.479,70.746Zm15.53-1.915a9.746,9.746,0,0,0-1.175-5.125,4.313,4.313,0,0,0-6.92.091,10.389,10.389,0,0,0-1.116,5.409v2.841a9.939,9.939,0,0,0,1.18,5.227A4.261,4.261,0,0,0,199.9,77.2a10.684,10.684,0,0,0,1.11-5.472v-2.9Zm-2.09,3.443a9.267,9.267,0,0,1-.626,3.784,1.977,1.977,0,0,1-1.878,1.239,2.027,2.027,0,0,1-1.913-1.312,9.5,9.5,0,0,1-.626-3.926V68.649a8.876,8.876,0,0,1,.626-3.687,1.984,1.984,0,0,1,1.889-1.222,2.008,2.008,0,0,1,1.925,1.244,9.341,9.341,0,0,1,.6,3.869v3.42ZM157,73a33,33,0,0,1,66,0h-4.67l6,8,6-8H226a36,36,0,0,0-72,0h3Z" transform="translate(-154 -37)"></path>
+</svg>
+
+			</div>
+		</div>
+	</div>
+		
+	<div class="spp-download-share-controls">
+		
+		
+			
+				
+				
+
+				
+					<a class="spp-button-downloada spp-control" href="http://traffic.libsyn.com/howtoprogramwithjava/javaprogram57.mp3" download="">
+						<svg xmlns="http://www.w3.org/2000/svg" class="spp-control spp-dss-image spp-download-image" aria-labelledby="spp-svg-title-download" role="img" width="24" height="24" viewBox="0 0 24 24">
+  <title id="spp-svg-title-download">Download</title>
+  <path id="Download" d="M23,24H1a1,1,0,0,1-1-1V19a1,1,0,1,1,2,0v3H22V19a1,1,0,0,1,2,0v4A1,1,0,0,1,23,24ZM12.753,17.661c-0.015.018-.019,0.04-0.036,0.057a1.031,1.031,0,0,1-1.435,0c-0.018-.018-0.025-0.043-0.041-0.062L6.282,12.7A1,1,0,0,1,7.7,11.282l3.3,3.3V1a1,1,0,0,1,2,0V14.586l3.3-3.3A1,1,0,0,1,17.718,12.7Z"></path>
+</svg>
+
+					</a>
+				
+				
+			
+			
+				<div class="spp-social">
+					<svg xmlns="http://www.w3.org/2000/svg" class="spp-control spp-dss-image spp-share-image" tabindex="0" aria-labelledby="spp-svg-title-share" role="img" width="24" height="24" viewBox="0 0 24 24">
+  <title id="spp-svg-title-share">Share</title>
+  <path id="Share" d="M84,8a3.975,3.975,0,0,1-2.946-1.314L71.9,11.12a3.767,3.767,0,0,1,0,1.761l9.158,4.434a4.027,4.027,0,1,1-.95,1.805l-9.158-4.434a4,4,0,1,1,0-5.371L80.1,4.88A4,4,0,1,1,84,8Zm0,14a2,2,0,0,0,0-4,1.978,1.978,0,0,0-.98.267,2.029,2.029,0,0,0-.724.7c-0.011.019-.02,0.039-0.031,0.058a1.966,1.966,0,0,0-.162.374c-0.012.038-.026,0.075-0.035,0.114A1.958,1.958,0,0,0,82,20a0.11,0.11,0,0,0,0,.014A2,2,0,0,0,84,22ZM69.9,11.4a1.967,1.967,0,0,0-.162-0.374c-0.011-.019-0.02-0.039-0.031-0.058a2.03,2.03,0,0,0-.724-0.7h0A1.978,1.978,0,0,0,68,10a2,2,0,0,0,0,4,1.975,1.975,0,0,0,.981-0.267,2.029,2.029,0,0,0,.716-0.689c0.016-.027.03-0.055,0.045-0.082a1.967,1.967,0,0,0,.149-0.343c0.015-.045.031-0.088,0.043-0.134a1.8,1.8,0,0,0,0-.975C69.923,11.471,69.909,11.434,69.9,11.4ZM84,2a2,2,0,0,0-2,1.984A0.12,0.12,0,0,0,82,4a1.958,1.958,0,0,0,.068.49c0.01,0.039.023,0.076,0.035,0.114a1.966,1.966,0,0,0,.162.374C82.276,5,82.285,5.016,82.3,5.035a2.03,2.03,0,0,0,.723.7A1.979,1.979,0,0,0,84,6,2,2,0,0,0,84,2Z" transform="translate(-64)"></path>
+</svg>
+
+				</div>
+			
+		
+	</div>
+			
+	
+		<div class="spp-share-icon-list" style="max-width: 155px;">
+			
+				<div class="spp-share-icon-container1" style="max-width: 23%;">
+					<div class="spp-share-icon-container" style="max-width: 100%;">
+						<img class="spp-control spp-share-btn spp-twitter" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/SPP-sprite.png" alt="Share on Twitter">
+					</div>
+				</div>
+			
+			
+				<div class="spp-share-icon-container1">
+					<div class="spp-share-icon-container">
+						<img class="spp-control spp-share-btn spp-facebook" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/SPP-sprite.png" alt="Share on Facebook">
+					</div>
+				</div>
+			
+			
+			
+				<div class="spp-share-icon-container1">
+					<div class="spp-share-icon-container">
+						<img class="spp-control spp-share-btn spp-google-plus" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/SPP-sprite.png" alt="Share on Google Plus">
+					</div>
+				</div>
+			
+			
+			
+			<div class="spp-share-icon-container1">
+				<div class="spp-share-icon-container">
+					<img class="spp-control spp-close-btn" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/SPP-sprite.png" alt="Close">
+				</div>
+			</div>
+		</div>
+	
+
+	<iframe class="spp-downloader" style="display:none" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource.html"></iframe>
+	
+</div>
+<div class="spp-track-layer-2">
+	
+	<div class="spp-artist-and-title" style="width: calc(100% - 208px);">
+		
+			<div class="spp-artist"><div class="spp-artist-box">
+				<span class="spp-artist-first-container">
+					<span>How to Program with Java</span>
+					<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				</span>
+				<span class="spp-artist-second-container">
+					<span>How to Program with Java</span>
+					<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				</span>
+			</div></div>
+		
+
+		<div class="spp-track-title"><div class="spp-track-title-box">
+			<span class="spp-track-title-first-container">
+				<span>Hibernate Eager vs Lazy Fetch Type</span>
+				<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			</span>
+			<span class="spp-track-title-second-container">
+				<span>Hibernate Eager vs Lazy Fetch Type</span>
+				<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			</span>
+		</div></div>
+	</div>
+	
+	<div class="spp-progress-bar">
+		<div class="spp-progress-played"></div>
+		<div class="spp-position"></div>
+		<div class="spp-time-elapsed"></div>
+		<div class="spp-time-remaining"></div>
+		<div class="spp-seek-time"></div>
+	</div>
+</div>
+
+
+</div>
+<h2>Background</h2>
+<p>The topic of Fetch types in Hibernate is a fairly advanced topic, as it requires you to have a decent understanding of the Java programming language, as well as have had exposure to SQL and the Hibernate framework for Java. In this post I’m going to assume that you posses this knowledge, if you do not, then I suggest you follow along with my podcasts <a href="https://itunes.apple.com/podcast/how-to-program-with-java/id563384781">available here</a>.</p>
+<h2>What the heck is a Fetch Type?</h2>
+<p>Great question! Hibernate is a very handy framework for removing your need to fully understand SQL, but it will force you to understand things such as <span style="text-decoration: underline;">joins</span>.</p>
+<p>Joining two <a href="https://howtoprogramwithjava.com/create-table-mysql/">tables in SQL</a> is the foundation of a relational database, as joins allow you to actually define relationships between tables (objects).</p>
+<p>Having said that, <span style="text-decoration: underline;">relationships</span> are important to understand when talking about fetch types in Hibernate. This is the case because whenever you define a relationship in Hibernate, you’ll also need to define the fetch type. The fetch type essentially decides whether or not to load all of the relationships of a particular object/table as soon as the object/table is initially fetched.</p>
+<p>An example of this would be as follows, consider this <code>User</code> object:</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">view plain</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;">copy to clipboard</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">print</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">?</a></div></div><ol start="1" class="dp-j"><li class="alt"><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">class</span><span>&nbsp;User&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;<span class="keyword">import</span><span>&nbsp;javax.persistence.OneToOne;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">import</span><span>&nbsp;javax.persistence.JoinColumn;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;String&nbsp;username;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;String&nbsp;password;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;Profile&nbsp;userProfile;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;<span class="comment">//&nbsp;omitting&nbsp;code&nbsp;for&nbsp;getters&nbsp;and&nbsp;setters&nbsp;for&nbsp;username,&nbsp;password</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;<span class="annotation">@OneToOne</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;<span class="annotation">@JoinColumn</span><span>(name=</span><span class="string">"user_profile_id"</span><span>)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;Profile&nbsp;getUserProfile()&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;userProfile;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;setUserProfile(Profile&nbsp;userProfile)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span><span>.userProfile&nbsp;=&nbsp;userProfile;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" style="display: none;">public class User
+{
+  import javax.persistence.OneToOne;
+  import javax.persistence.JoinColumn;
+
+  private String username;
+  private String password;
+  private Profile userProfile;
+
+  // omitting code for getters and setters for username, password
+
+  @OneToOne
+  @JoinColumn(name="user_profile_id")
+  private Profile getUserProfile()
+  {
+    return userProfile;
+  }
+
+  private void setUserProfile(Profile userProfile)
+  {
+    this.userProfile = userProfile;
+  }
+}</pre>
+<p>Can you spot the relationship in this <code>User</code> object?</p>
+<p>If you can’t, no worries, there’s an easy way to spot it!</p>
+<p>Any time you see a <code>@OneToOne</code>, <code>@OneToMany</code> or <code>@ManyToMany</code> annotations, you’ve got a relationship. What’s important to note is that the fetch type should be specified within those annotations, if you don’t specify one then it defaults to <code>FetchType.LAZY</code>.</p>
+<p>What this means is that when you load up an instance of the <code>User</code> class via a Hibernate query, Hibernate will NOT load this User’s <code>Profile</code> unless you explicitly ask it to. So this means that if you try to call <code>user.getUserProfile()</code>, you’ll get a <code>NULL</code>.</p>
+<h2>Difference Between EAGER and LAZY</h2>
+<p>Okay, so we talked about the fact that <code>FetchType.LAZY</code> is the default fetch type for all Hibernate annotation relationships. We also talked about the fact that when you use the Lazy fetch type, Hibernate won’t load the relationships for that particular object instance. So then, what’s the difference between Eager and Lazy?</p>
+<p>Fetch type Eager is essentially the opposite of Lazy, Eager will by default load ALL of the relationships related to a particular object loaded by Hibernate. This means that if you change the relationship to be this:</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">view plain</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;">copy to clipboard</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">print</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">?</a></div></div><ol start="1" class="dp-j"><li class="alt"><span><span class="keyword">import</span><span>&nbsp;javax.persistence.FetchType;&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">//....</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="comment">//....</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">//....</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span><span class="annotation">@OneToOne</span><span>(fetch=FetchType.EAGER)&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="annotation">@JoinColumn</span><span>(name=</span><span class="string">"user_profile_id"</span><span>)&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">private</span><span>&nbsp;Profile&nbsp;getUserProfile()&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;userProfile;&nbsp;&nbsp;</span></span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" style="display: none;">  import javax.persistence.FetchType;
+  //....
+  //....
+  //....
+
+  @OneToOne(fetch=FetchType.EAGER)
+  @JoinColumn(name="user_profile_id")
+  private Profile getUserProfile()
+  {
+    return userProfile;
+  }</pre>
+<p>Hibernate will now load the user profile into the user object by default. This means that if you access <code>user.getUserProfile()</code> it won’t be <code>NULL</code> (unless the joining table actually doesn’t contain a matching row by the “user_profile_id” join column).</p>
+<p>So, the long story short here is:</p>
+<p><code>FetchType.LAZY</code> = Doesn’t load the relationships unless explicitly “asked for” via getter<br>
+<code>FetchType.EAGER</code> = Loads ALL relationships</p>
+<h2>Pros and Cons</h2>
+<p>If using the lazy loading approach can cause <code>NullPointerException</code>s, then why the heck would you want to use it? Well, let’s just take a minute to think about this.</p>
+<p>Let’s assume we had a <code>User</code> object that has 10 different relationships to other objects. Let’s also say that you have a user that’s trying to login and you just want to check to see if their username and password is correct and matches what’s stored in the database. Would you really want to load ALL 10 relationships and NOT make use of ANY of those loaded relationships? Remember, loading things from a database is fairly “expensive” in terms of the time it takes to load all that information into a <a href="https://howtoprogramwithjava.com/java-object/">Java objects</a> AND keep them in memory. And what happens if one of the relationships points to an object that ALSO has 10 relationships (and all of those are set up as fetch type EAGER). Think of the cascading massacre of objects loaded from the database into memory!</p>
+<p>The way I like to put it is like this:</p>
+<ul>
+<ul>
+<li><b>EAGER</b>: Convenient, but slow</li>
+<li><b>LAZY</b>: More coding, but much more efficient</li>
+</ul>
+</ul>
+<h2>How to Properly use Lazy Loading w/ Spring</h2>
+<p>So having outlined the differences between these two approaches, I hope you realize that Lazy loading is a suggested route to take your application code in most scenarios. So having said that, how do we make use of Lazy loading with a Spring enabled application?</p>
+<p>The important thing to remember is that when using a Spring/Hibernate application, there’s a bit of code that is handled for you in the background that you don’t actually see. The code that you don’t see is the transactional code (enabled by the <code>@Transactional</code> annotation in your DAOs) and this is something that you always need to keep in mind when using Lazy loading.</p>
+<p>Having said that, let’s take a look at an example of Lazy loading using our <code>User</code> object. Let’s assume we have our <code>User</code> object which has a Lazy load fetch enabled to the <code>Profile</code> object. So we will need to design our <code>UserDao</code> with this relationship in mind. One approach is to create two separate getter methods like so:</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">view plain</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;">copy to clipboard</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">print</a><a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">?</a></div></div><ol start="1" class="dp-j"><li class="alt"><span><span class="comment">/**</span>&nbsp;</span></li><li class=""><span><span class="comment">*&nbsp;This&nbsp;UserDao&nbsp;object&nbsp;is&nbsp;being&nbsp;constructed&nbsp;under&nbsp;the&nbsp;assumption&nbsp;that&nbsp;the&nbsp;relationship</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*&nbsp;&nbsp;to&nbsp;the&nbsp;Profile&nbsp;object&nbsp;is&nbsp;being&nbsp;Lazily&nbsp;loaded&nbsp;using&nbsp;FetchType.LAZY</span>&nbsp;</span></li><li class=""><span><span class="comment">*/</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="annotation">@Repository</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="annotation">@Transactional</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">class</span><span>&nbsp;UserDao&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;<span class="annotation">@Autowired</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;SessionFactory&nbsp;sessionFactory;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;User&nbsp;getUserById(Long&nbsp;userId)&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;Session&nbsp;session&nbsp;=&nbsp;sessionFactory.getCurrentSession();&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;this&nbsp;will&nbsp;invoke&nbsp;the&nbsp;</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;(User)&nbsp;session.createCriteria(User.</span><span class="keyword">class</span><span>).add(Restrictions.idEq(userId)).uniqueResult();&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;User&nbsp;getUserWithProfileById(Long&nbsp;userId)&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;Session&nbsp;session&nbsp;=&nbsp;sessionFactory.getCurrentSession();&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;user&nbsp;=&nbsp;(Users)&nbsp;session.createCriteria(User.<span class="keyword">class</span><span>).add(Restrictions.idEq(userId)).uniqueResult();&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;this&nbsp;will&nbsp;force&nbsp;SQL&nbsp;to&nbsp;execute&nbsp;the&nbsp;query&nbsp;that&nbsp;will&nbsp;join&nbsp;with&nbsp;the&nbsp;user's&nbsp;profile&nbsp;and&nbsp;populate</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//&nbsp;&nbsp;the&nbsp;appropriate&nbsp;information&nbsp;into&nbsp;the&nbsp;user&nbsp;object.</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Hibernate.initialize(user.getUserProfile());&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;user;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" style="display: none;">/**
+* This UserDao object is being constructed under the assumption that the relationship
+*  to the Profile object is being Lazily loaded using FetchType.LAZY
+*/
+@Repository
+@Transactional
+public class UserDao
+{
+  @Autowired
+  private SessionFactory sessionFactory;
+
+  public User getUserById(Long userId)
+  {
+    Session session = sessionFactory.getCurrentSession();
+
+    // this will invoke the 
+    return (User) session.createCriteria(User.class).add(Restrictions.idEq(userId)).uniqueResult();
+  }
+
+  public User getUserWithProfileById(Long userId)
+  {
+    Session session = sessionFactory.getCurrentSession();
+
+    User user = (Users) session.createCriteria(User.class).add(Restrictions.idEq(userId)).uniqueResult();
+    // this will force SQL to execute the query that will join with the user's profile and populate
+    //  the appropriate information into the user object.
+    Hibernate.initialize(user.getUserProfile());
+
+    return user;
+  }
+}</pre>
+<p>In the code above you see that we have created two getter methods to load the <code>User</code> object from our database via Hibernate.</p>
+<p>This means that when you want to load a <code>User</code> object without any relationships (i.e. when you’re checking to see if the login information is valid) then you can call <code>getUserById</code> and this will bypass the unnecessary join to the <code>Profile</code> object/table. But if you are in a situation where you DO need to refer to the <code>User</code>‘s profile, then you can call the <code>getUserWithProfileById</code>.</p>
+<p>Make sense?</p>
+<h2>Fun Fact</h2>
+<p>I was struggling with this Lazy loading concept at first and I’ll share the secret as to why. If you are using lazy loading and you were to invoke the <code>getUserById</code> method, you know that it won’t load the profile relationship… but what happens if you’ve inserted a breakpoint into this <code>getUserById</code> method and you <strong>CLICK</strong> on the user’s profile listing in the “Variables” tab inside of Eclipse/STS?</p>
+<p><strong>Hibernate will automatically invoke that SQL join and populate the relationship for you</strong>!</p>
+<p>This was confusing the heck out of me because when I clicked on the profile, it was showing up just fine in the “variables” section, and then my subsequent code was working normally (I wasn’t getting <code>NullPointerException</code>s) This was so strange and it wasn’t until I looked at the console log that I realized as SOON as I clicked on that profile property, hibernate was executing the SQL query and populating the object.</p>
+<p>So be wary, it’s almost like a quantum physics problem… the act of observing lazy loading changes the outcome of the code flow!</p>
+<p>Also, be sure to grab the free <a href="https://my.leadpages.net/leadbox/14d7c4273f72a2%3A1428eac46b46dc/5901244262514688/" target="_blank" data-leadbox="https://my.leadpages.net/leadbox/14d7c4273f72a2%3A1428eac46b46dc/5901244262514688/" data-leadbox-id="14d7c4273f72a2:1428eac46b46dc">Video Tutorial for Eager vs Lazy Loading in Hibernate</a><script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/leadbox-764.js" type="text/javascript"></script></p>
+<p>With those words of wisdom, I wish you happy learning folks 🙂</p>
+<div style="margin-bottom: 10em;">
+<h2>The Best 7 Java Programming Resources</h2>
+<p>Alright, so if you’re read this far down the article, then you’re clearly interested in learning how to code. We actually have a free guide that outlines the best 7 resources for Java programmers.</p>
+<p>When you sign up you’ll receive the guide immediately and you’ll also receive a few emails a week that will help you speed up your Java learning process so you can get up and running as fast as possible.</p>
+<p>Go ahead an click the button below to get started!</p>
+<p><a style="color: #ffffff; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-weight: bold; font-size: 25px; line-height: 33x; padding: 10px; display: inline-block; max-width: 560px; border-radius: 5px; text-shadow: rgba(0, 0, 0, 0.247059) 0px -1px 1px; box-shadow: rgba(255, 255, 255, 0.498039) 0px 1px 3px inset, rgba(0, 0, 0, 0.498039) 0px 1px 3px; background: #ffce0a;" href="https://trevorpage.leadpages.co/leadbox/14db7e9f3f72a2%3A1428eac46b46dc/5909773262258176/" target="_blank" data-leadbox="https://trevorpage.leadpages.co/leadbox/14db7e9f3f72a2%3A1428eac46b46dc/5909773262258176/" data-leadbox-id="14db7e9f3f72a2:1428eac46b46dc">CAREFUL! Don’t Push This Button If You’re Not Ready To FINALLY Learn How to Code</a><script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/leadbox-902.js" type="text/javascript" data-leadbox="14db7e9f3f72a2:1428eac46b46dc" data-url="https://trevorpage.leadpages.co/leadbox/14db7e9f3f72a2%3A1428eac46b46dc/5909773262258176/" data-config="%7B%7D"></script></p>
+</div>
+</div>				</div>
+			</div>
+			<div id="comments">
+				<p class="comments_intro"><span class="bracket">{</span> <span class="num_comments">49</span> comments… <a href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#commentform" rel="nofollow">add one</a> <span class="bracket">}</span></p>
+				<ul class="comment_list">
+					<li class="comment even thread-even depth-1" id="comment-2020">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/6003719b9a405a28c70dc50325e21c28" srcset="https://secure.gravatar.com/avatar/6003719b9a405a28c70dc50325e21c28?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Kaushik Shrestha</span>
+							<span class="comment_date">November 29, 2013, 7:09 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2020"><p>Very good article!! crystal cleared the concept of the 2 fetch types – lazy loading and eager fetch… specially the fact about the breakpoints is an eye-opener.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2020#commentform" onclick="return addComment.moveForm( &quot;comment-body-2020&quot;, &quot;2020&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Kaushik Shrestha">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2020" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+<ul class="children">
+					<li class="comment odd alt depth-2" id="comment-3448">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Anonymous</span>
+							<span class="comment_date">August 18, 2015, 10:16 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-3448"><p>Good understanding</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=3448#commentform" onclick="return addComment.moveForm( &quot;comment-body-3448&quot;, &quot;3448&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to ">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-3448" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+</ul>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2296">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Akbar</span>
+							<span class="comment_date">December 31, 2013, 6:19 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2296"><p>Good article…</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2296#commentform" onclick="return addComment.moveForm( &quot;comment-body-2296&quot;, &quot;2296&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Akbar">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2296" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2317">
+						<div class="comment_head">
+							<span class="avatar"><a href="http://deep-developers.blogspot.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/37486af47df551fab54090d5c9d66c2c" srcset="https://secure.gravatar.com/avatar/37486af47df551fab54090d5c9d66c2c?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="http://deep-developers.blogspot.com/" rel="external nofollow" class="url">Prem</a></span>
+							<span class="comment_date">January 15, 2014, 1:34 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2317"><p>Nice Article..!!</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2317#commentform" onclick="return addComment.moveForm( &quot;comment-body-2317&quot;, &quot;2317&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Prem">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2317" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2390">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Nitin</span>
+							<span class="comment_date">February 6, 2014, 7:56 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2390"><p>Very Nice Article.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2390#commentform" onclick="return addComment.moveForm( &quot;comment-body-2390&quot;, &quot;2390&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Nitin">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2390" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2426">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/309ae39c0a604508581af6af6eb8207c" srcset="https://secure.gravatar.com/avatar/309ae39c0a604508581af6af6eb8207c?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Tuyen</span>
+							<span class="comment_date">February 17, 2014, 10:45 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2426"><p>Wow! It’s nice. Thank you very much. It helps me alot! ^^!</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2426#commentform" onclick="return addComment.moveForm( &quot;comment-body-2426&quot;, &quot;2426&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Tuyen">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2426" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2435">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/34ee80b7335328a1284edb60ccb15375" srcset="https://secure.gravatar.com/avatar/34ee80b7335328a1284edb60ccb15375?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Pally Gharmount</span>
+							<span class="comment_date">February 20, 2014, 5:07 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2435"><p>Hi, Very good article, however i could not see the difference between the methods getUserById &amp; getUserWithProfileById that shows the Eager loading. If the domain object is loaded Lazy how would the getUserWithProfileById method get the profile? They both look identical.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2435#commentform" onclick="return addComment.moveForm( &quot;comment-body-2435&quot;, &quot;2435&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Pally Gharmount">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2435" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+<ul class="children">
+					<li class="comment byuser comment-author-admin bypostauthor odd alt depth-2" id="comment-2440">
+						<div class="comment_head">
+							<span class="avatar"><a href="https://howtoprogramwithjava.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/5ce83a0c38cb3802d0f03c651218258e" srcset="https://secure.gravatar.com/avatar/5ce83a0c38cb3802d0f03c651218258e?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="https://howtoprogramwithjava.com/" rel="external nofollow" class="url">Trevor Page</a></span>
+							<span class="comment_date">February 25, 2014, 6:36 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2440"><p>Thanks for the comment, I love getting questions!</p>
+<p>The main different is in this key line of code:<br>
+<code>Hibernate.initialize(user.getUserProfile()); </code></p>
+<p>This magical line will force Hibernate to load the joined table into your <code>Users</code> class for later use 🙂</p>
+<p>Hope that helps,</p>
+<p>Trevor</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2440#commentform" onclick="return addComment.moveForm( &quot;comment-body-2440&quot;, &quot;2440&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Trevor Page">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2440" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+</ul>
+</li><!-- #comment-## -->
+					<li class="comment even thread-even depth-1" id="comment-2471">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">pk</span>
+							<span class="comment_date">March 20, 2014, 5:12 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2471"><p>Thanks. Magic line helped me 🙂</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2471#commentform" onclick="return addComment.moveForm( &quot;comment-body-2471&quot;, &quot;2471&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to pk">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2471" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2486">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/2f91dcd86e92fdabfb7076da6d1ff6a5" srcset="https://secure.gravatar.com/avatar/2f91dcd86e92fdabfb7076da6d1ff6a5?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Siddiqa</span>
+							<span class="comment_date">April 5, 2014, 3:12 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2486"><p>Very Good Article ! Thank You Very Much !</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2486#commentform" onclick="return addComment.moveForm( &quot;comment-body-2486&quot;, &quot;2486&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Siddiqa">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2486" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-even depth-1" id="comment-2652">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">veeru</span>
+							<span class="comment_date">May 21, 2014, 5:52 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2652"><p>very useful</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2652#commentform" onclick="return addComment.moveForm( &quot;comment-body-2652&quot;, &quot;2652&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to veeru">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2652" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2683">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/8610e0ac960f226a3193bf8a25ae2e56" srcset="https://secure.gravatar.com/avatar/8610e0ac960f226a3193bf8a25ae2e56?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">zafar pavez</span>
+							<span class="comment_date">June 20, 2014, 5:09 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2683"><p>Simply Awesome….</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2683#commentform" onclick="return addComment.moveForm( &quot;comment-body-2683&quot;, &quot;2683&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to zafar pavez">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2683" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-even depth-1" id="comment-2716">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/600ab8da91eb69151d23cb1f5052a4bd" srcset="https://secure.gravatar.com/avatar/600ab8da91eb69151d23cb1f5052a4bd?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Luca</span>
+							<span class="comment_date">July 8, 2014, 6:40 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2716"><p>Hi Trevor,<br>
+You wrote that “if you try to call user.getUserProfile() [with lazy fetch], you’ll get a NULL.” This is not true! As soon as you access the userProfile property, Hibernate will execute the query that will retrieve the user’s profile from the user/profile relationship. Lazy fetch doesn’t mean that join queries are not executed. It simply means that join queries are executed when needed – i.e. the first time a property from the related table is accessed.<br>
+You too wrote it in the last section of this article, “Fun Fact”: “Hibernate will automatically invoke that SQL join and populate the relationship for you!” So, you seem to contradict yourself, don’t you?</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2716#commentform" onclick="return addComment.moveForm( &quot;comment-body-2716&quot;, &quot;2716&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Luca">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2716" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+<ul class="children">
+					<li class="comment byuser comment-author-admin bypostauthor odd alt depth-2" id="comment-2722">
+						<div class="comment_head">
+							<span class="avatar"><a href="https://howtoprogramwithjava.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/5ce83a0c38cb3802d0f03c651218258e" srcset="https://secure.gravatar.com/avatar/5ce83a0c38cb3802d0f03c651218258e?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="https://howtoprogramwithjava.com/" rel="external nofollow" class="url">Trevor Page</a></span>
+							<span class="comment_date">July 9, 2014, 10:56 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2722"><p>Hi Luca,</p>
+<p>It’s been a while since I posted this particular tutorial, but if my memory serves, whenever I ran the program it would return NULL for the join.  I believe the reason was because it was throwing an exception.  Until I debugged it, then it would actually invoke the fetch, which would solve the exception issue.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2722#commentform" onclick="return addComment.moveForm( &quot;comment-body-2722&quot;, &quot;2722&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Trevor Page">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2722" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even depth-2" id="comment-2824">
+						<div class="comment_head">
+							<span class="avatar"><a href="http://www.simplecodestuffs.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/0407f823f663ea634d5b0a97b87db660" srcset="https://secure.gravatar.com/avatar/0407f823f663ea634d5b0a97b87db660?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="http://www.simplecodestuffs.com/" rel="external nofollow" class="url">Jamil</a></span>
+							<span class="comment_date">October 10, 2014, 3:33 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2824"><p>I guess Luca is right. In both eager and  lazy fetch the value form userProfile gets fetched from database. The difference between them is the ‘UserProfile’ is fetched from database only when user.getUserProfile () is executed, where as in case of eager fetch, the value for ‘UserProfile’ is fetched fully at the time their parent(User) is fetched.   The above explanation for lazy fetch is wrong. Other wise its a nice article.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2824#commentform" onclick="return addComment.moveForm( &quot;comment-body-2824&quot;, &quot;2824&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Jamil">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2824" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt depth-2" id="comment-2885">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/3f7312bcb3a788ca715efa5da6c59ece" srcset="https://secure.gravatar.com/avatar/3f7312bcb3a788ca715efa5da6c59ece?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Rahul Arora</span>
+							<span class="comment_date">December 12, 2014, 12:01 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2885"><p>Yes, the contradiction is clearly there.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2885#commentform" onclick="return addComment.moveForm( &quot;comment-body-2885&quot;, &quot;2885&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Rahul Arora">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2885" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+<ul class="children">
+					<li class="comment even depth-3" id="comment-2889">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Anonymous</span>
+							<span class="comment_date">December 26, 2014, 12:13 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2889"><p>The contradiction only exists if you call user.getUserProfile() in the UserDao class.  That’s because this code is being executed inside a Hibernate session.  If you tried to call user.getUserProfile() outside of the UserDao (and outside of the Hibernate session) you would then experience the difference between Lazy and Eager loading.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2889#commentform" onclick="return addComment.moveForm( &quot;comment-body-2889&quot;, &quot;2889&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to ">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2889" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+<ul class="children">
+					<li class="comment byuser comment-author-admin bypostauthor odd alt depth-4" id="comment-2896">
+						<div class="comment_head">
+							<span class="avatar"><a href="https://howtoprogramwithjava.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/5ce83a0c38cb3802d0f03c651218258e" srcset="https://secure.gravatar.com/avatar/5ce83a0c38cb3802d0f03c651218258e?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="https://howtoprogramwithjava.com/" rel="external nofollow" class="url">Trevor Page</a></span>
+							<span class="comment_date">January 6, 2015, 2:39 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2896"><p>Exactly.  Thanks for answering this question on my behalf 🙂</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2896#commentform" onclick="return addComment.moveForm( &quot;comment-body-2896&quot;, &quot;2896&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Trevor Page">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2896" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+</ul>
+</li><!-- #comment-## -->
+</ul>
+</li><!-- #comment-## -->
+</ul>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2808">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/d1c08cfb9cc81269750ff16165bd8cfb" srcset="https://secure.gravatar.com/avatar/d1c08cfb9cc81269750ff16165bd8cfb?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Ruwan</span>
+							<span class="comment_date">September 21, 2014, 9:41 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2808"><p>Great article. Thanks</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2808#commentform" onclick="return addComment.moveForm( &quot;comment-body-2808&quot;, &quot;2808&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Ruwan">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2808" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2812">
+						<div class="comment_head">
+							<span class="avatar"><a href="http://hardwarebg.com/forum" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/1e4b3a507d2f677170393e5c86535162" srcset="https://secure.gravatar.com/avatar/1e4b3a507d2f677170393e5c86535162?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="http://hardwarebg.com/forum" rel="external nofollow" class="url">Stamen Stoychev</a></span>
+							<span class="comment_date">September 25, 2014, 5:49 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2812"><p>Very good and well explained article!!!</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2812#commentform" onclick="return addComment.moveForm( &quot;comment-body-2812&quot;, &quot;2812&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Stamen Stoychev">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2812" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2851">
+						<div class="comment_head">
+							<span class="avatar"><a href="http://ewaldertl.blogspot.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/4a965781352153c694c8265f537e6fd2" srcset="https://secure.gravatar.com/avatar/4a965781352153c694c8265f537e6fd2?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="http://ewaldertl.blogspot.com/" rel="external nofollow" class="url">Ewald Ertl</a></span>
+							<span class="comment_date">November 5, 2014, 8:58 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2851"><p>Hi Trevor,<br>
+this comment is not directly for this podcast. It is for the whole series you’ve made and inspired by<br>
+the introduction, where you like to have responses 😉</p>
+<p>I’m living in Austria and I’m working in the IT Industry for 22 years now ( Just have calculated, when I started  😉<br>
+I started testing software on SunOS, later on on Solaris, changed from testing to System Administration and<br>
+Administration of the distributed Software-system of the company I worked for. Later I changed, where I’m still administrating Linux, Solaris and AIX Servers and I’m developing an inhouse framework in C/C++ but<br>
+since some years also some apps in Java. </p>
+<p>On a regular base I read introduction books in Java to get up with the last developments, because our<br>
+customers in the banking sector are not adpoting so fast. We’re happy if Java 1.6 can be used 😉</p>
+<p>And gladly I came across you’re podcasts. Now I listen to you,  while I’m walking with our dog during<br>
+the weekend and you really enjoy how you present the topics. </p>
+<p>Keep on going, I love this series. </p>
+<p>Wish you all the best<br>
+Ewald</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2851#commentform" onclick="return addComment.moveForm( &quot;comment-body-2851&quot;, &quot;2851&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Ewald Ertl">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2851" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+<ul class="children">
+					<li class="comment byuser comment-author-admin bypostauthor odd alt depth-2" id="comment-2852">
+						<div class="comment_head">
+							<span class="avatar"><a href="https://howtoprogramwithjava.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/5ce83a0c38cb3802d0f03c651218258e" srcset="https://secure.gravatar.com/avatar/5ce83a0c38cb3802d0f03c651218258e?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="https://howtoprogramwithjava.com/" rel="external nofollow" class="url">Trevor Page</a></span>
+							<span class="comment_date">November 6, 2014, 10:40 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2852"><p>It’s my pleasure Ewald, I’m always amazed at the huge reach that the podcasting platform has.  I love to hear from my “international” listeners like yourself.  Thanks so much for taking the time to write out that comment and I look forward to bringing more and more great stuff in the future!</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2852#commentform" onclick="return addComment.moveForm( &quot;comment-body-2852&quot;, &quot;2852&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Trevor Page">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2852" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+</ul>
+</li><!-- #comment-## -->
+					<li class="comment even thread-even depth-1" id="comment-2853">
+						<div class="comment_head">
+							<span class="avatar"><a href="http://rama.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/bd1db8586bcbb1c7273582adb0079114" srcset="https://secure.gravatar.com/avatar/bd1db8586bcbb1c7273582adb0079114?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="http://rama.com/" rel="external nofollow" class="url">rama</a></span>
+							<span class="comment_date">November 10, 2014, 1:43 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2853"><p>very nice… like it</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2853#commentform" onclick="return addComment.moveForm( &quot;comment-body-2853&quot;, &quot;2853&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to rama">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2853" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2857">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/572481b423ea4ac9adbd2e0ad47dfcb4" srcset="https://secure.gravatar.com/avatar/572481b423ea4ac9adbd2e0ad47dfcb4?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Rajiv</span>
+							<span class="comment_date">November 15, 2014, 4:12 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2857"><p>Hi,<br>
+I just want to know how to apply eager loading at a particular method call.<br>
+Eg: Hibernate Service Method – will give List, Customer have relationshiop with CustomerAddress table.<br>
+I want to use lazy loading for all method calls inside Service method.<br>
+My problem is,<br>
+I have a webservice method which in turn calls Hibernate Service method and returns the List to the SOAP request, only at this time I want Eager loading and also want to avoid “NullPointerException”.<br>
+Rest of the time, I want Lazy loading only.</p>
+<p>Whats the solution??<br>
+Thanks!</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2857#commentform" onclick="return addComment.moveForm( &quot;comment-body-2857&quot;, &quot;2857&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Rajiv">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2857" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+<ul class="children">
+					<li class="comment byuser comment-author-admin bypostauthor even depth-2" id="comment-2858">
+						<div class="comment_head">
+							<span class="avatar"><a href="https://howtoprogramwithjava.com/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/5ce83a0c38cb3802d0f03c651218258e" srcset="https://secure.gravatar.com/avatar/5ce83a0c38cb3802d0f03c651218258e?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="https://howtoprogramwithjava.com/" rel="external nofollow" class="url">Trevor Page</a></span>
+							<span class="comment_date">November 15, 2014, 10:10 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2858"><p>Not sure if I fully understand your situation, but maybe this explanation will help you out:</p>
+<p>Eager or Lazy loading is applied (and can only be applied) to the domain classes themselves.  You cannot switch between using the Lazy loading and Eager loading strategies dynamically.  You must choose and stick to one or the other.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2858#commentform" onclick="return addComment.moveForm( &quot;comment-body-2858&quot;, &quot;2858&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Trevor Page">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2858" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+</ul>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2893">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">hadi</span>
+							<span class="comment_date">January 3, 2015, 3:25 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2893"><p>Nice 🙂</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2893#commentform" onclick="return addComment.moveForm( &quot;comment-body-2893&quot;, &quot;2893&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to hadi">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2893" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2894">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Luis</span>
+							<span class="comment_date">January 5, 2015, 3:21 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2894"><p>Thanks!!, it helped me a lot.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2894#commentform" onclick="return addComment.moveForm( &quot;comment-body-2894&quot;, &quot;2894&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Luis">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2894" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2905">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Anonymous</span>
+							<span class="comment_date">January 20, 2015, 10:25 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2905"><p>It’s great. thanks</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2905#commentform" onclick="return addComment.moveForm( &quot;comment-body-2905&quot;, &quot;2905&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to ">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2905" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2929">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Yan</span>
+							<span class="comment_date">February 7, 2015, 10:50 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2929"><p>Great article. Thank you so much.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2929#commentform" onclick="return addComment.moveForm( &quot;comment-body-2929&quot;, &quot;2929&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Yan">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2929" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2930">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Antibrumm</span>
+							<span class="comment_date">February 10, 2015, 3:21 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2930"><p>Nice article about Lazy loading. However: You are doing one important mistake: The default fetch type of …ToOne relations are EAGER and NOT LAZY (declared in hibernate-jpa-2.1-api-1.0.0.Final.jar) . You can further optimize the sql queries if you turn on lazy loading also for the …ToOne relations, as the generated queries will not contain joins to the already loaded entity.</p>
+<p>public @interface ManyToOne {<br>
+        /**<br>
+     * (Optional) Whether the association should be lazily<br>
+     * loaded or must be eagerly fetched. The EAGER<br>
+     * strategy is a requirement on the persistence provider runtime that<br>
+     * the associated entity must be eagerly fetched. The LAZY<br>
+     * strategy is a hint to the persistence provider runtime.<br>
+     */<br>
+    FetchType fetch() default EAGER;<br>
+}</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2930#commentform" onclick="return addComment.moveForm( &quot;comment-body-2930&quot;, &quot;2930&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Antibrumm">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2930" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2934">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Ilya</span>
+							<span class="comment_date">February 16, 2015, 8:11 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2934"><p>it’s clear now. tnx</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2934#commentform" onclick="return addComment.moveForm( &quot;comment-body-2934&quot;, &quot;2934&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Ilya">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2934" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2935">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/f3550b27436c1d04b08073063fece50b" srcset="https://secure.gravatar.com/avatar/f3550b27436c1d04b08073063fece50b?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Paul</span>
+							<span class="comment_date">February 18, 2015, 7:46 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2935"><p>You should clarify what´s happens when you try to cast an hibernate proxy. You will need  initialize that element first to avoid issues.<br>
+I think a little bit explanation about what a hibernate proxy it is would be nice.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2935#commentform" onclick="return addComment.moveForm( &quot;comment-body-2935&quot;, &quot;2935&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Paul">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2935" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2943">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/47fb1b8d1e229896c0a8776296b235c3" srcset="https://secure.gravatar.com/avatar/47fb1b8d1e229896c0a8776296b235c3?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Mithun</span>
+							<span class="comment_date">March 4, 2015, 4:52 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2943"><p>Excellent article. Clearly explained the concepts on Lazy and Eager loading.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2943#commentform" onclick="return addComment.moveForm( &quot;comment-body-2943&quot;, &quot;2943&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Mithun">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2943" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2945">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Rebe</span>
+							<span class="comment_date">March 4, 2015, 9:12 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2945"><p>Finally a post on how to load correctly in a Lazy loading context. Thank you.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2945#commentform" onclick="return addComment.moveForm( &quot;comment-body-2945&quot;, &quot;2945&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Rebe">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2945" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2953">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/e1769ef1df5459c13f4a0dd0bee7d47d" srcset="https://secure.gravatar.com/avatar/e1769ef1df5459c13f4a0dd0bee7d47d?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Pierre Roudaut</span>
+							<span class="comment_date">March 26, 2015, 4:29 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2953"><p>@TrevorPage, I just want to give you a big hug 🙂 !</p>
+<p>I’ve been struggling for days to understand the behavior of Hibernate on Set of entities contained in an entity (one-to-many).<br>
+Having a a background in C language, I am used to test every pointer  I touch and to control every initialization. So, the limit where Hibernate actually initialize and populate entities for you is actually blurry when you are a beginner using this ORM (such as me).</p>
+<p>I was using lazy loading on an entity that had a collection of other entites (one-to-many), the pointer of the Set was not NULL so I figured the whole Set was initialized and populate but NO !!! As soon as you even iterate on the Set, a LazyLoadingException is thrown.</p>
+<p>After reading this tutorial, I now understand where is the limit of what Hibernate actually does, and where do I need to trigger.<br>
+So thanks a LOT ! You just made it crystal clear !</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2953#commentform" onclick="return addComment.moveForm( &quot;comment-body-2953&quot;, &quot;2953&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Pierre Roudaut">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2953" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2961">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/4abadd518917799353dea39c76c9079f" srcset="https://secure.gravatar.com/avatar/4abadd518917799353dea39c76c9079f?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">shantanu</span>
+							<span class="comment_date">April 10, 2015, 2:20 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2961"><p>Nice end to the article 😀</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2961#commentform" onclick="return addComment.moveForm( &quot;comment-body-2961&quot;, &quot;2961&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to shantanu">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2961" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-2971">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/a6792f20bc24b59b5f0a7a572ab33d23" srcset="https://secure.gravatar.com/avatar/a6792f20bc24b59b5f0a7a572ab33d23?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Sreekanth</span>
+							<span class="comment_date">April 18, 2015, 11:04 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2971"><p>Too useful information..thanks a ton</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2971#commentform" onclick="return addComment.moveForm( &quot;comment-body-2971&quot;, &quot;2971&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Sreekanth">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2971" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-2977">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/0453edad8219ed3ceeee823d2e6d598b" srcset="https://secure.gravatar.com/avatar/0453edad8219ed3ceeee823d2e6d598b?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Raunak Shakya</span>
+							<span class="comment_date">May 1, 2015, 6:25 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-2977"><p>great article, gave me a clear understanding of fetching. thanks a lot!</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=2977#commentform" onclick="return addComment.moveForm( &quot;comment-body-2977&quot;, &quot;2977&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Raunak Shakya">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-2977" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-3247">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/cd1d9bc74db4a92e08cf17be9c51a0f4" srcset="https://secure.gravatar.com/avatar/cd1d9bc74db4a92e08cf17be9c51a0f4?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Mark</span>
+							<span class="comment_date">July 24, 2015, 9:25 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-3247"><p>Great article.  Lazy loading can be one of the more confusing things in hibernate and you gave a simple and clear example of how to use it properly.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=3247#commentform" onclick="return addComment.moveForm( &quot;comment-body-3247&quot;, &quot;3247&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Mark">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-3247" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-3286">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/ecc7c3ad11916b3b4642fd9ec6aca24d" srcset="https://secure.gravatar.com/avatar/ecc7c3ad11916b3b4642fd9ec6aca24d?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Hassan</span>
+							<span class="comment_date">July 28, 2015, 1:26 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-3286"><p>Simply great…………..! 🙂</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=3286#commentform" onclick="return addComment.moveForm( &quot;comment-body-3286&quot;, &quot;3286&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Hassan">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-3286" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-3288">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/cd3d1981dc0701618c4c61ce6ebdbcd0" srcset="https://secure.gravatar.com/avatar/cd3d1981dc0701618c4c61ce6ebdbcd0?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Singh</span>
+							<span class="comment_date">July 28, 2015, 8:04 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-3288"><p>&gt;&gt;Any time you see a @OneToOne, @OneToMany or @ManyToMany annotations, you’ve got a relationship. What’s important to note is that the fetch type should be specified within those annotations, if you don’t specify one then it defaults to FetchType.LAZY.</p>
+<p>Please note, for @OneToOne and @ManyToOne, default fetch type is FetchType.EAGER</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=3288#commentform" onclick="return addComment.moveForm( &quot;comment-body-3288&quot;, &quot;3288&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Singh">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-3288" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-3835">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/5d2431057b89bbf7748bc7ab87e59551" srcset="https://secure.gravatar.com/avatar/5d2431057b89bbf7748bc7ab87e59551?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">bangaram</span>
+							<span class="comment_date">September 26, 2015, 1:56 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-3835"><p>in real time example where we can used these lazy and early loading<br>
+for example explain amazon applications</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=3835#commentform" onclick="return addComment.moveForm( &quot;comment-body-3835&quot;, &quot;3835&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to bangaram">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-3835" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-5098">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">youssef</span>
+							<span class="comment_date">January 7, 2016, 5:51 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-5098"><p>Hi, i want just to add somthing that FetchType.LAZY is not the default behaviour for Hibernate annotation relationships.</p>
+<p>@onetomany:lazy<br>
+@manytomany:lazy<br>
+@manytoone:eager<br>
+@onetoone:eager</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=5098#commentform" onclick="return addComment.moveForm( &quot;comment-body-5098&quot;, &quot;5098&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to youssef">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-5098" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-5697">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/3f009d72559f51e7e454b16e5d0687a1" srcset="https://secure.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">abhishek</span>
+							<span class="comment_date">March 14, 2016, 7:03 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-5697"><p>nice one, Tx</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=5697#commentform" onclick="return addComment.moveForm( &quot;comment-body-5697&quot;, &quot;5697&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to abhishek">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-5697" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-5988">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/f96ca3cf70a9be99d913d289a7017255" srcset="https://secure.gravatar.com/avatar/f96ca3cf70a9be99d913d289a7017255?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">VasyaFortochkin</span>
+							<span class="comment_date">May 19, 2016, 8:15 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-5988"><p>Thanks, man. You’ve really helped me</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=5988#commentform" onclick="return addComment.moveForm( &quot;comment-body-5988&quot;, &quot;5988&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to VasyaFortochkin">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-5988" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-6597">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/dbc92cc2b6c70be9a08b3b88f44d0807" srcset="https://secure.gravatar.com/avatar/dbc92cc2b6c70be9a08b3b88f44d0807?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Srikant Bhushan</span>
+							<span class="comment_date">August 18, 2016, 3:58 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-6597"><p>very nice clarification of difference between both according to scope of DAO class and Hibernate  Session and I understand the same according to DAO class but not getting the difference according to Hibernate Session.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=6597#commentform" onclick="return addComment.moveForm( &quot;comment-body-6597&quot;, &quot;6597&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Srikant Bhushan">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-6597" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-6762">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/cfdf5ea5a7c216693a72a4d5b523d7e8" srcset="https://secure.gravatar.com/avatar/cfdf5ea5a7c216693a72a4d5b523d7e8?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></span>
+							<span class="comment_author">Filip</span>
+							<span class="comment_date">September 3, 2016, 4:38 am</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-6762"><p>That’s a great article! Thanks</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=6762#commentform" onclick="return addComment.moveForm( &quot;comment-body-6762&quot;, &quot;6762&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Filip">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-6762" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment odd alt thread-even depth-1" id="comment-8187">
+						<div class="comment_head">
+							<span class="avatar"><a href="http://www.asimetris.co.id/" rel="nofollow"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/842cfaffc8e44b571af679f7538d053b" srcset="https://secure.gravatar.com/avatar/842cfaffc8e44b571af679f7538d053b?s=176&amp;r=g 2x" class="avatar avatar-88 photo" height="88" width="88"></a></span>
+							<span class="comment_author"><a href="http://www.asimetris.co.id/" rel="external nofollow" class="url">Rusli Usman</a></span>
+							<span class="comment_date">December 22, 2016, 6:44 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-8187"><p>Excellent explaination of the EAGER and LAZY fetching.  What I’m looking for is the solution to the LAZY type, and your article helps me.  Thanks very much.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=8187#commentform" onclick="return addComment.moveForm( &quot;comment-body-8187&quot;, &quot;8187&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Rusli Usman">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-8187" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+					<li class="comment even thread-odd thread-alt depth-1" id="comment-8879">
+						<div class="comment_head">
+							<span class="avatar"><img alt="" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(1)" srcset="https://secure.gravatar.com/avatar/?s=176&amp;r=g 2x" class="avatar avatar-88 photo avatar-default" height="88" width="88"></span>
+							<span class="comment_author">Boris</span>
+							<span class="comment_date">February 28, 2017, 4:45 pm</span>
+						</div>
+						<div class="comment_text grt" id="comment-body-8879"><p>Excellent article. Eloquently explains eager and lazy fetch types.<br>
+This piece of art should be served as a template for “how to write technical articles”. Seriously.</p>
+						</div>
+						<div class="comment_footer">
+							<a rel="nofollow" class="comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/?replytocom=8879#commentform" onclick="return addComment.moveForm( &quot;comment-body-8879&quot;, &quot;8879&quot;, &quot;commentform&quot;, &quot;1988&quot; )" aria-label="Reply to Boris">Reply</a>
+							<a class="comment_permalink" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#comment-8879" title="permalink to this comment" rel="nofollow">Link</a>
+						</div>
+</li><!-- #comment-## -->
+				</ul>
+				<form id="commentform" method="post" action="https://howtoprogramwithjava.com/wp-comments-post.php">
+					<a rel="nofollow" id="cancel-comment-reply-link" href="https://howtoprogramwithjava.com/hibernate-eager-vs-lazy-fetch-type/#respond" style="display:none;">Cancel reply</a>
+					<p class="comment_form_title">Leave a Comment</p>
+					<p id="comment_form_name">
+						<label for="author">Name</label>
+						<input type="text" id="author" class="input_text" name="author" value="" tabindex="1">
+					</p>
+					<p id="comment_form_email">
+						<label for="email">Email</label>
+						<input type="text" id="email" class="input_text" name="email" value="" tabindex="2">
+					</p>
+					<p id="comment_form_url">
+						<label for="url">Website</label>
+						<input type="text" id="url" class="input_text" name="url" value="" tabindex="3">
+					</p>
+					<p id="comment_form_comment">
+						<label for="comment">Comment</label>
+						<textarea name="comment" id="comment" class="input_text" tabindex="4" rows="6"></textarea><grammarly-btn><div data-reactroot="" class="_e725ae-textarea_btn _e725ae-anonymous _e725ae-not_focused" style="visibility: hidden; z-index: 2;"><div class="_e725ae-transform_wrap"><div title="Protected by Grammarly" class="_e725ae-status">&nbsp;</div></div></div></grammarly-btn>
+					</p>
+					<p id="comment_form_submit">
+						<input type="submit" id="submit" class="input_submit" name="submit" tabindex="5" value="Submit">
+					</p>
+<input type="hidden" name="b72e957355a5b2f876502216650c7367" value="b72e957355a5b2f876502216650c7367"><p id="gasp_p" style="clear:both;"><label><input type="checkbox" id="cl_check_b88" name="cl_check_b88"> Are you a real person!?</label></p><script type="text/javascript">
+        //v1.5.1
+        var gasp_p = document.getElementById("gasp_p");
+        var gasp_cb = document.createElement("input");
+        var gasp_text = document.createTextNode(" Are you a real person!?");
+        gasp_cb.type = "checkbox";
+        gasp_cb.id = "cl_check_b88";
+        gasp_cb.name = "cl_check_b88";
+
+        var gasp_label = document.createElement("label");
+        gasp_p.appendChild(gasp_label);
+        gasp_label.appendChild(gasp_cb);
+        gasp_label.appendChild(gasp_text);
+        var frm = gasp_cb.form;
+        frm.onsubmit = gasp_it;
+        function gasp_it(){
+        if(gasp_cb.checked != true){
+        alert("Please check the box to confirm that you are indeed a human being :)");
+        return false;
+        }
+        return true;
+        }
+        </script>
+        <noscript>you MUST enable javascript to be able to comment</noscript>
+        <input type="hidden" id="gasp_email" name="gasp_email" value=""><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="5355714c56"></p><p style="display: none;"></p><input type="hidden" name="comment_post_ID" value="1988" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+				<input type="hidden" id="ak_js" name="ak_js" value="1492807585618"></form>
+			</div>
+			<div class="prev_next">
+				<p class="next_post">Next post: <a href="https://howtoprogramwithjava.com/algorithms-and-big-o-notation/" rel="next">Algorithms and Big O Notation</a></p>
+				<p class="previous_post">Previous post: <a href="https://howtoprogramwithjava.com/java-podcast-spring-security/" rel="prev">Java Podcast – Spring Security</a></p>
+			</div>
+		</div>
+		<div class="sidebar q2w3-fixed-widget-container" style="height: 1380px;">
+<div class="widget widget_text" id="text-4"><p class="widget_title">Start Here</p>			<div class="textwidget"><a href="https://proffesso.com/Learn-Core-Java-(Starter)" target="_blank"><img src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/learn-core-java.png"></a></div>
+		</div><div class="widget widget_categories" id="categories-4"><p class="widget_title">Categories</p>		<ul>
+	<li class="cat-item cat-item-13"><a href="https://howtoprogramwithjava.com/category/advanced-tips/">Advanced Tips</a>
+</li>
+	<li class="cat-item cat-item-121"><a href="https://howtoprogramwithjava.com/category/assignment-2/">Assignment</a>
+</li>
+	<li class="cat-item cat-item-221"><a href="https://howtoprogramwithjava.com/category/hibernate-2/">Hibernate</a>
+</li>
+	<li class="cat-item cat-item-131"><a href="https://howtoprogramwithjava.com/category/html/">HTML</a>
+</li>
+	<li class="cat-item cat-item-19"><a href="https://howtoprogramwithjava.com/category/intermediate-tips/">Intermediate Tips</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="https://howtoprogramwithjava.com/category/introduction/">Introduction</a>
+</li>
+	<li class="cat-item cat-item-261"><a href="https://howtoprogramwithjava.com/category/javascript/">JavaScript</a>
+</li>
+	<li class="cat-item cat-item-47"><a href="https://howtoprogramwithjava.com/category/mailing-list/">Mailing List</a>
+</li>
+	<li class="cat-item cat-item-35"><a href="https://howtoprogramwithjava.com/category/podcast-2/">Podcast</a>
+</li>
+	<li class="cat-item cat-item-205"><a href="https://howtoprogramwithjava.com/category/sql-2/">SQL</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://howtoprogramwithjava.com/category/uncategorized/">Uncategorized</a>
+</li>
+		</ul>
+</div><div class="widget widget_search" id="search-4"><form role="search" method="get" id="searchform" class="searchform" action="https://howtoprogramwithjava.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s">
+					<input type="submit" id="searchsubmit" value="Search">
+				</div>
+			</form></div><!-- fixed widget --><div class="widget widget_text q2w3-widget-clone-thesis_wp_widgets_1348079687" id="text-3_clone" style="top: 120px; width: 226px; height: 222px; visibility: hidden;">			
+		</div><div class="widget widget_text" id="text-3" style="top: 120px; width: 226px; position: fixed;"><p class="widget_title">Learn Java Fast</p>			<div class="textwidget"><a data-sumome-listbuilder-id="51a803bc-0205-45fc-b760-d71d26317ccb" data-sumome-trigger="true" href="javascript:void(0);"><img src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/Learn-Java-Fast-2.png"></a></div>
+		</div>		</div>
+	</div>
+	<div class="footer">
+	</div>
+</div>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shCore.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushCSharp.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushPhp.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushJScript.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushJava.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushVb.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushSql.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushXml.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushDelphi.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushPython.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushRuby.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushCss.js"></script>
+<script class="javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/shBrushCpp.js"></script>
+<script class="javascript">
+dp.SyntaxHighlighter.ClipboardSwf = 'https://htpwj-zone1-rrzzqutxbqkmxn.netdna-ssl.com/wp-content/plugins/google-syntax-highlighter/Scripts/clipboard.swf';
+dp.SyntaxHighlighter.HighlightAll('code');
+</script><style>.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style>.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style>.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style>
+<style>
+	/* Smart Podcast Player custom styles for color e7741b */
+
+
+
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-main-region .spp-main-view .spp-controls .spp-play-pause-circle .spp-play .spp-play-bar,
+.smart-track-player.stp-color-e7741b-EEEEEE .spp-track-layer-1 .spp-playback-controls .spp-play-pause .spp-play .spp-play-bar {
+	background-color: #e7741b ;
+}
+
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-playlist-region .spp-track-list .spp-track-row .spp-eq-svg,
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-playlist-region .spp-track-list .spp-track-row .spp-play-svg {
+	fill: #e7741b ;
+}
+
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-main-region .spp-main-view .spp-progress-bar .spp-progress-played,
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-main-region .spp-main-view .spp-progress-bar .spp-seek-time,
+.smart-track-player.stp-color-e7741b-EEEEEE .spp-track-layer-2 .spp-progress-bar .spp-progress-played,
+.smart-track-player.stp-color-e7741b-EEEEEE .spp-track-layer-2 .spp-progress-bar .spp-seek-time {
+	background-color: #e7741b ;
+}
+
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-main-region .spp-main-view .spp-progress-bar .spp-time-elapsed ,
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-main-region .spp-main-view .spp-progress-bar .spp-time-remaining ,
+.smart-podcast-player.spp-color-e7741b .spp-player-layout .spp-main-region .spp-main-view .spp-progress-bar .spp-seek-time,
+.smart-track-player.stp-color-e7741b-EEEEEE .spp-track-layer-2 .spp-progress-bar .spp-time-elapsed,
+.smart-track-player.stp-color-e7741b-EEEEEE .spp-track-layer-2 .spp-progress-bar .spp-time-remaining,
+.smart-track-player.stp-color-e7741b-EEEEEE .spp-track-layer-2 .spp-progress-bar .spp-seek-time {
+	color: #FFF ;
+}
+
+.smart-podcast-player.spp-color-e7741b .spp-show-notes a,
+.smart-podcast-player.spp-color-e7741b .spp-truncated-show-notes a {
+	color: #e7741b ;
+}
+</style>
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/form.js"></script>
+<link rel="stylesheet" id="askpat-player-plugin-fonts-css" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="askpat-player-plugin-styles-css" href="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/style-2.2.0.css" type="text/css" media="all">
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/wp-syntax.js"></script>
+<script type="text/javascript">
+var q2w3_sidebar_options = new Array();
+q2w3_sidebar_options[0] = { "sidebar" : "thesis_wp_widgets_1348079687", "margin_top" : 120, "margin_bottom" : 0, "stop_id" : "", "screen_max_width" : 0, "screen_max_height" : 0, "width_inherit" : false, "refresh_interval" : 1500, "window_load_hook" : false, "disable_mo_api" : false, "widgets" : ['text-3'] };
+</script>
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/q2w3-fixed-widget.min.js"></script>
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/wp-embed.min.js"></script>
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/underscore.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var AP_Player = {"homeUrl":"https:\/\/howtoprogramwithjava.com","baseUrl":"https:\/\/howtoprogramwithjava.com\/wp-content\/plugins\/smart-podcast-player\/assets\/js\/","ajaxurl":"https:\/\/howtoprogramwithjava.com\/wp-admin\/admin-ajax.php","soundcloudConsumerKey":"b38b3f6ee1cdb01e911c4d393c1f2f6e","version":"2.2.0","importantStr":"","licensed":"1","debug_output":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/main-2.2.0.min.js"></script>
+<script src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  $("body").append("<a href='https://trevorpage.lpages.co/leadbox/14a1cd5f3f72a2%3A1428eac46b46dc/5805898672898048/' target='_blank'><div id='proofClickable' style='z-index: 9999999; height: 63px; width: 319px;position: fixed; bottom: 20px; left: 9px; cursor: pointer;'></div></a>");
+$("body").on("click", "#proofClickable", function () {
+  //if ($("#proof").attr("class") == "show-proof")
+  //  window.location.href = 'https://trevorpage.lpages.co/leadbox/14a1cd5f3f72a2%3A1428eac46b46dc/5805898672898048/';
+}); 
+</script><a href="https://trevorpage.lpages.co/leadbox/14a1cd5f3f72a2%3A1428eac46b46dc/5805898672898048/" target="_blank" data-leadbox="https://trevorpage.lpages.co/leadbox/14a1cd5f3f72a2%3A1428eac46b46dc/5805898672898048/" data-leadbox-id="14a1cd5f3f72a2:1428eac46b46dc"><div id="proofClickable" style="z-index: 9999999; height: 63px; width: 319px; position: fixed; bottom: 20px; left: 9px; cursor: pointer;"></div></a>
+<script data-leadbox="14a1cd5f3f72a2:1428eac46b46dc" data-url="https://trevorpage.lpages.co/leadbox/14a1cd5f3f72a2%3A1428eac46b46dc/5805898672898048/" data-config="%7B%7D" type="text/javascript" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/leadbox-1491596925.js"></script>
+<iframe id="proof" frameborder="0" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/index.html" style="display: none;" class="show-proof"></iframe><script type="text/javascript">
+(function(){
+	var classes = document.getElementsByClassName('menu_control');
+	for (i = 0; i < classes.length; i++) {
+		classes[i].onclick = function() {
+			var menu = this.nextElementSibling;
+			if (/show_menu/.test(menu.className))
+				menu.className = menu.className.replace('show_menu', '').trim();
+			else
+				menu.className += ' show_menu';
+		};
+	}
+})();
+</script>
+<noscript>&lt;style type="text/css" scoped&gt;.menu { display: block; }&lt;/style&gt;</noscript>
+
+
+<div style="position: absolute; right: 0px; left: 0px; bottom: 0px; top: 0px; z-index: 2147483646; width: 100%; opacity: 0.5; display: none; height: 18066px; background: black;"></div><iframe src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(6).html" style="position: absolute; left: 0px; top: 0px; width: 100%; border: none; z-index: 2147483647; height: 605px; display: none;"></iframe><iframe src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(7).html" style="position: absolute; left: 0px; top: 0px; width: 100%; border: none; z-index: 2147483647; height: 605px; display: none;"></iframe><iframe src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(8).html" style="position: absolute; left: 0px; top: 0px; width: 100%; border: none; z-index: 2147483647; height: 605px; display: none;"></iframe><iframe src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(9).html" style="position: absolute; left: 0px; top: 0px; width: 100%; border: none; z-index: 2147483647; height: 605px; display: none;"></iframe><iframe src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(10).html" style="position: absolute; left: 0px; top: 0px; width: 100%; border: none; z-index: 2147483647; height: 605px; display: none;"></iframe><iframe id="sumome-jquery-iframe" style="display: none;" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(11).html"></iframe><a href="javascript:void(0);" title="Sumo" style="border-radius: 3px 0px 0px 3px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 10px; position: fixed; z-index: 2147483647; padding: 0px; width: 44px; height: 40px; text-indent: -10000px; opacity: 1; display: block !important; top: 40px; right: -40px; background-color: rgb(0, 115, 183);"><span style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; margin-left: 4px; margin-right: 0px; border-radius: 3px 0px 0px 3px;">Sumo</span><span style="display: block; width: 40px; height: 40px; margin-left: 4px; border-radius: 3px 0px 0px 3px; margin-right: 0px; background: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZDQ2MjI4YS03NWY2LTRkZTQtOGJjYy1hODc1NjRkMjYxYTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDQ3MUVFMDFFMjVDMTFFNjlFQjhBRjdGODU5MDJBMDUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDQ3MUVFMDBFMjVDMTFFNjlFQjhBRjdGODU5MDJBMDUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxZDQ2MjI4YS03NWY2LTRkZTQtOGJjYy1hODc1NjRkMjYxYTUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MWQ0NjIyOGEtNzVmNi00ZGU0LThiY2MtYTg3NTY0ZDI2MWE1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+8JtvywAAAKhQTFRFzOPxSJvLA3W4Mo7FBna5w97u8vj7EHy8a67VhbzdsdTpVaLPh73d9/v9C3m6QZfJbq/WXKbR3u32JIfB3ez1KorDir/eBHW4+/3+rtPoZarUG4K/LIvDDnu7ocvkf7nbdrTY9fr8E328WKPQO5PITJ3MPpXJstXptdbq+Pv9cbHXaq3VU6HOkMLgnMnjDHq62uv1/P3+6/T53Oz1cLDX/f7+AHO3////ptOZ5QAAADh0Uk5T/////////////////////////////////////////////////////////////////////////wA7XBHKAAAAmUlEQVR42sSRRxLCMAxFRSq9907ovebr/jdDMWYGxmZL3sIqbyFbJv4B/VlkVlerKALTD3G46Mx3AOR1UZ/TsDxW6W0gfYRNVfTCFu2AWpAMgMItMW+zQJU2UjWI29D0+e5KWNPMk+A9Om+B/UgOJyCuwMJCrpuziYkIsglfRByZ/XM3eXnBFEu1kpMpjq9dxQYp/OAXTwEGAB7Rc1xVnPemAAAAAElFTkSuQmCC&quot;) 8px 8px no-repeat white;"></span></a><iframe style="display: none;" src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(12).html"></iframe><div style="position: fixed; top: 0px; left: 0px; overflow: hidden;"><label for="focus_retriever" style="position:absolute;left:-1000px;">Focus Retriever</label><input style="position:absolute;left:-1000px;" type="text" name="focus_retriever" value="" id="focus_retriever" readonly="true"></div><img src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(2)" alt="" style="display: none;"><img src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(3)" alt="" style="display: none;"><img src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(4)" alt="" style="display: none;"><img src="./Hibernate Eager vs Lazy Fetch Type – How to Program with Java_files/saved_resource(5)" alt="" style="display: none;"></body><div style="visibility: hidden; top: -9999px; position: absolute; opacity: 0;"></div><div style="visibility: hidden; top: -9999px; position: absolute; opacity: 0;"></div><span class="gr__tooltip" style=""><span class="gr__tooltip-content"></span><i class="gr__tooltip-logo"></i><span class="gr__triangle"></span></span></html>
