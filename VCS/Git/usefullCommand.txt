@@ -1,2 +1,10 @@
 clone specific branch -->  git clone -b my-branch http://gitlab/ifobs/ifobs.git
 set autologin -> git config credential.helper store
+
+
+Squash commits ->
+
+git checkout my_branch
+git reset --soft HEAD~4
+git commit
+git push --force origin my_branch

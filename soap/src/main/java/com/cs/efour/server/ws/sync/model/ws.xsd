@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:ws="http://sync.ws.server.efour.cs.com/"
+           targetNamespace="http://sync.ws.server.efour.cs.com/"
+           elementFormDefault="qualified" version="1.0" jaxb:version="2.0">
+
+    <xs:element name="CardInfoRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="login" type="xs:string"/>
+                <xs:element name="siteid" type="xs:string"/>
+                <xs:element name="cardno" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CardInfoResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="metaData" type="ws:ResponseMetaData"/>
+                <xs:element name="cardInfo" type="ws:CardInfo" minOccurs="0"/>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="ResponseMetaData">
+        <xs:sequence>
+            <xs:element name="status" type="ws:ResponseStatus"/>
+            <xs:element name="error" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CardInfo">
+        <xs:sequence>
+            <xs:element name="cardno" type="xs:string"/>
+            <xs:element name="svaccountno" type="xs:string"/>
+            <xs:element name="accountstate" type="xs:string"/>
+            <xs:element name="currencyid" type="xs:string"/>
+            <xs:element name="cardstate" type="xs:string"/>
+            <xs:element name="expirationdate" type="xs:string"/>
+            <xs:element name="accountno" type="xs:string"/>
+            <xs:element name="firstname" type="xs:string"/>
+            <xs:element name="secondname" type="xs:string" minOccurs="0"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="birthdate" type="xs:string" minOccurs="0"/>
+            <xs:element name="identifycode" type="xs:string" minOccurs="0"/>
+            <xs:element name="documentno" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="ResponseStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OK"/>
+            <xs:enumeration value="ERROR"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
+

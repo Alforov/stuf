@@ -1,0 +1,6 @@
+mvn versions:set -DnewVersion=your_new_version
+then
+If you made a mistake, do
+mvn versions:revert
+afterwards, or
+mvn versions:commit

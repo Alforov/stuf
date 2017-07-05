@@ -1,0 +1,3 @@
+  SELECT a.id, a.requestdate, a.responsedate, a.action, a.request,
+                                              a.response
+                                         FROM ext_system_calls a where dbms_lob.instr(response,'"bill_id":2060')>0 order by id desc;
