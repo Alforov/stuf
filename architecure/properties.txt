@@ -1,0 +1,2 @@
+properties devided on funcitonal and not-functional. For example not-funcitonal properties are:
+perfomance, secure, extensiable

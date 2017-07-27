@@ -1,0 +1,39 @@
+ Application Domain Requirements
+ 
+ 4.1.1 Low Entry-barrier
+Since participation in the creation and structuring of information was voluntary, a low
+entry-barrier was necessary to enable sufficient adoption. This applied to all users of the
+Web architecture: readers, authors, and application developers.
+
+4.1.2 Extensibility
+While simplicity makes it possible to deploy an initial implementation of a distributed
+system, extensibility allows us to avoid getting stuck forever with the limitations of what
+was deployed. Even if it were possible to build a software system that perfectly matches
+the requirements of its users, those requirements will change over time just as society
+changes over time. A system intending to be as long-lived as the Web must be prepared
+for change.
+
+4.1.3 Distributed Hypermedia
+Hypermedia is defined by the presence of application control information embedded
+within, or as a layer above, the presentation of information. Distributed hypermedia allows
+the presentation and control information to be stored at remote locations. By its nature,
+user actions within a distributed hypermedia system require the transfer of large amounts
+of data from where the data is stored to where it is used. Thus, the Web architecture must
+be designed for large-grain data transfer.
+
+4.1.4 Internet-scale
+The Web is intended to be an Internet-scale distributed hypermedia system, which means
+considerably more than just geographical dispersion. The Internet is about interconnecting
+information networks across multiple organizational boundaries. Suppliers of information
+services must be able to cope with the demands of anarchic scalability and the
+independent deployment of software components
+
+
+4.1.4.2 Independent Deployment
+Multiple organizational boundaries also means that the system must be prepared for
+gradual and fragmented change, where old and new implementations co-exist without
+preventing the new implementations from making use of their extended capabilities.
+Existing architectural elements need to be designed with the expectation that later
+architectural features will be added. Likewise, older implementations need to be easily
+identified so that legacy behavior can be encapsulated without adversely impacting newer
+architectural elements. 

@@ -1,0 +1,51 @@
+REST provides a set of
+architectural constraints that, when applied as a whole, emphasizes scalability of
+component interactions, generality of interfaces, independent deployment of components,
+and intermediary components to reduce interaction latency, enforce security, and
+encapsulate legacy systems.
+
+so REST is architectuaral style.
+
+That process honed my model down to a core set of principles, properties, and constraints that are now called REST
+
+constarins:
+------------------------------------
+Client-Server client-server
+----------------------------------------
+Stateless -  client-stateless-server  This constraint induces the properties of visibility, reliability, and scalability/
+Visibility is improved because a monitoring system does not have to look beyond a single request
+datum in order to determine the full nature of the request. Reliability is improved because
+it eases the task of recovering from partial failures [133]. Scalability is improved because
+not having to store state between requests allows the server component to quickly free
+resources, and further simplifies implementation because the server doesn’t have to
+manage resource usage across requests
+
+disadvantage is that it may decrease network performance by increasing the repetitive data
+--------------------------------------------------------------------------
+
+client-cachestateless-server
+----------------------------------------------------------------------
+5.1.5 Uniform Interface
+Uniform-Layered-Client-Cache-Stateless-Server
+The central feature that distinguishes the REST architectural style from other networkbased
+styles is its emphasis on a uniform interface between components/
+
+
+REST is defined by four interface constraints:
+identification of resources; manipulation of resources through representations; selfdescriptive
+messages; and, hypermedia as the engine of application state.
+-------------------------------------------------------------------------
+
+ ---------------------------------------------------
+ Code-On-Demand
+  REST allows client functionality to be extended by
+downloading and executing code in the form of applets or scripts
+------------------------------------------------
+
+
+REST does not restrict communication to a particular protocol, but it does constrain
+the interface between components, and hence the scope of interaction and implementation
+assumptions that might otherwise be made between components. For example, the Web’s
+primary transfer protocol is HTTP, but the architecture also includes seamless access to
+resources that originate on pre-existing network servers, including FTP [107], Gopher [7],
+and WAIS

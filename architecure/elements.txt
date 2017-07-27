@@ -1,0 +1,71 @@
+A software architecture is defined by a configuration of architectural
+elements—components, connectors, and data—constrained in their
+relationships in order to achieve a desired set of architectural properties
+
+
+
+---------------------------------------------------------------------------------
+COMPONENT
+A component is an abstract unit of software instructions and internal
+state that provides a transformation of data via its interface.
+---------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------
+CONNECTOR
+A connector is an abstract mechanism that mediates communication,
+coordination, or cooperation among components.
+---------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------
+DATA
+A datum is an element of information that is transferred from a
+component, or received by a component, via a connector
+---------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------
+CONFIGURATION
+A configuration is the structure of architectural relationships among
+components, connectors, and data during a period of system run-time.
+---------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------
+PROPERTIES
+The set of architectural properties of a software architecture includes all properties that
+derive from the selection and arrangement of components, connectors, and data within the
+system. Examples include both the functional properties achieved by the system and nonA
+configuration is the structure of architectural relationships among
+components, connectors, and data during a period of system run-time.
+13
+functional properties, such as relative ease of evolution, reusability of components,
+efficiency, and dynamic extensibility, often referred to as quality attributes [9].
+---------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------
+STYLES
+An architectural style is a coordinated set of architectural constraints
+that restricts the roles/features of architectural elements and the allowed
+relationships among those elements within any architecture that
+conforms to that style.
+---------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------
+Patterns and Pattern Languages
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+Views
+An architectural viewpoint is often application-specific and varies widely
+based on the application domain. ... we have seen architectural viewpoints that
+address a variety of issues, including: temporal issues, state and control
+approaches, data representation, transaction life cycle, security safeguards,
+and peak demand and graceful degradation. No doubt there are many more
+possible viewpoints.
+---------------------------------------------------------------------------------

@@ -1,67 +1,104 @@
 package oop;
 
-import a.TestSort;
-import test1.Bill;
-import test1.PaymentBrokerEndpoint;
-import test1.PaymentBrokerEndpointService;
-import test1.UpbsException_Exception;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
 
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.MessageContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.*;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by mikhail_alferov on 26.04.2017.
  */
 public class Test {
-    public static void main(String[] args) throws UpbsException_Exception {
-       String s = "jjj\tggg";
+    private static ExecutorService executor =
+            Executors.newCachedThreadPool();
+    private static Logger LOGGER = Logger.getLogger("test");
 
-        System.out.println(s.charAt(2) == 9);
-        System.out.println(s);
-        Test test = new Test();
-        PaymentBrokerEndpoint paymentBrokerEndpoint = test.upbsService();
-        List<Bill> bills = new ArrayList<>();
-        bills.add(new Bill());
-        paymentBrokerEndpoint.calculateTariffs(bills);
+    public static void main(String[] args)
+            throws ExecutionException, InterruptedException {
+        List<MyTask> tasks = IntStream.range(0, 10)
+                .mapToObj(i -> new MyTask(1))
+                .collect(toList());
+        runSequentially(tasks);
+        useParallelStream(tasks);
+        useCompletableFutureWithExecutor(tasks);
 
     }
 
-    public Object getBill() {
-        return new Object();
+    public static void runSequentially(List<MyTask> tasks) {
+        long start = System.nanoTime();
+        List<Integer> result = tasks.stream()
+                .map(MyTask::calculate)
+                .collect(toList());
+        long duration = (System.nanoTime() - start) / 1_000_000;
+        System.out.printf("Processed %d tasks in %d millis\n", tasks.size(), duration);
+        System.out.println(result);
     }
 
-    private PaymentBrokerEndpoint upbsService() {
-        try {
-            //PaymentBrokerEndpointService paymentBrokerEndpointService = new PaymentBrokerEndpointService(new URL("http://localhost:9580/UPBS/paymentBroker/PaymentBroker-Service?wsdl"));
-            PaymentBrokerEndpointService paymentBrokerEndpointService = new PaymentBrokerEndpointService(getClass().getClassLoader().getResource("mok/upbs.wsdl"));
-            PaymentBrokerEndpoint paymentBrokerEndpointPort = paymentBrokerEndpointService.getPaymentBrokerEndpointPort();
-
-            //Set timeout until a connection is established
-            Map<String, Object> requestContext = ((BindingProvider) paymentBrokerEndpointPort).getRequestContext();
-            requestContext.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, "http://localhost:9580/UPBS/paymentBroker/PaymentBroker-Service?wsdl");
-            requestContext.put("javax.xml.ws.client.connectionTimeout", "15000");
-            //Set timeout until the response is received
-            requestContext.put("javax.xml.ws.client.receiveTimeout", 10000);
-            requestContext.put("com.sun.xml.internal.ws.connect.timeout", 10000);
-            requestContext.put("com.sun.xml.internal.ws.request.timeout", 10000);
-            requestContext.put("com.sun.xml.ws.connect.timeout", 10000);
-            requestContext.put("com.sun.xml.ws.request.timeout", 10000);
-            //Set auth user
-            requestContext.put(BindingProvider.USERNAME_PROPERTY, "IFOBS");
-            requestContext.put(BindingProvider.PASSWORD_PROPERTY, "IFOBS");
-            //Set client locale header (as Standard HTTP header)
-            Map<String, List<String>> headers = new HashMap<>();
-           // headers.put(HTTP_HEADER_LANGUAGE, Collections.singletonList(clientLocal));
-            requestContext.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
-
-            return paymentBrokerEndpointPort;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+    public static void useParallelStream(List<MyTask> tasks) {
+        long start = System.nanoTime();
+        List<Integer> result = tasks.parallelStream()
+                .map(MyTask::calculate)
+                .collect(toList());
+        long duration = (System.nanoTime() - start) / 1_000_000;
+        System.out.printf("Processed %d tasks in %d millis\n", tasks.size(), duration);
+        System.out.println(result);
     }
+
+    public static void useCompletableFutureWithExecutor(List<MyTask> tasks) {
+        long start = System.nanoTime();
+        ExecutorService executor = Executors.newFixedThreadPool(Math.min(tasks.size(), 10));
+        List<CompletableFuture<Integer>> futures =
+                tasks.stream()
+                        .map(t -> CompletableFuture.supplyAsync(t::calculate, executor))
+                        .collect(toList());
+
+        List<Integer> result =
+                futures.stream()
+                        .map(CompletableFuture::join)
+                        .collect(toList());
+        long duration = (System.nanoTime() - start) / 1_000_000;
+        System.out.printf("Processed %d tasks in %d millis\n", tasks.size(), duration);
+        System.out.println(result);
+        executor.shutdown();
+    }
+
+    private static void test() throws InterruptedException, ExecutionException {
+        CompletableFuture promise = CompletableFuture
+                .supplyAsync(() -> {
+                    System.out.println("Action ran in: " +
+                            Thread.currentThread().getName());
+                    return 12;
+                }, executor);
+        int completedFuture = (int) promise.get();
+        System.out.println("The new CompletableFuture: " +
+                completedFuture);
+        executor.shutdown();
+    }
+
+    private static void test1() throws InterruptedException {
+        CompletableFuture
+                .supplyAsync(() -> {
+                    LOGGER.info("CF created in: " +
+                            Thread.currentThread().getName());
+                    return "XER";
+                }, executor)
+                .thenApply(result -> {
+                    LOGGER.info("Action on CF ran in: " +
+                            Thread.currentThread().getName());
+                    return result.concat("XXXX");
+                })
+                .thenApplyAsync(result -> {
+                    LOGGER.info("Another action ran in: " +
+                            Thread.currentThread().getName());
+                    return result.length();
+                }, executor)
+                .thenAccept(System.out::println);
+
+        long timeout = 2000;
+        executor.awaitTermination(timeout, TimeUnit.MILLISECONDS);
+        executor.shutdown();
+    }
+
 }
