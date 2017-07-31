@@ -20,9 +20,8 @@ public class Test {
         List<MyTask> tasks = IntStream.range(0, 10)
                 .mapToObj(i -> new MyTask(1))
                 .collect(toList());
-        runSequentially(tasks);
-        useParallelStream(tasks);
-        useCompletableFutureWithExecutor(tasks);
+       useParallelStream(tasks);
+        //useCompletableFutureWithExecutor(tasks);
 
     }
 
