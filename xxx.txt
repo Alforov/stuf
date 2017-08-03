@@ -87,11 +87,27 @@ hypermedia as the engine of application state - или HATEOAS это означ
 
 REST не описывает детали компонентов а так же реализацию и синтаксис протокола, чтобы сосредоточиться на ролях компонентов и на ограничения на их взаимодействие с другими компонентами
 
+RPC-based APIs are great for actions (that is, procedures or commands).
+REST-based APIs are great for modeling your domain (that is, resources or entities), making CRUD (create, read, update, delete) available for all of your data.
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 HTTP
+
+REQUEST
+RESPONSE
+
+HEADERS
+REQUEST HEADERS
+Keep-alive, content-length, host
+RESPONSE HEADERS
+COOKIE
+   for requeset: set-cookies
+BODY
+SESSION
+RESPONSE CODE
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
