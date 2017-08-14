@@ -146,6 +146,7 @@ JSON vs XML advantages and disadvantages
 JAVA 8 
 lamda and supporeted clasees
 streams 
+Stream operations that can be connected are called intermediate operations. They can be connected together because their return type is a Stream. Operations that close a stream pipeline are called terminal operations.
 concarrency
 spliterator
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
