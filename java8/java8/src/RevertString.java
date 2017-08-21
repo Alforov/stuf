@@ -1,15 +1,37 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
  * Created by mikhail_alferov on 21.08.2017.
  */
 public class RevertString {
-    public static void main(String[] args) {
-        char i = 33333;
-        System.out.println(i);
-        String hello = "Hello world!";
-      /*  System.out.println(reverseRecursively(hello));
-        System.out.println(revertByStringBuilder(hello));
-        System.out.println(revertByArray(hello));*/
-        System.out.println(reverseStrange(hello));
+    public static void main(String[] args) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(new File("wiki-100k.txt"));
+        int available = fileInputStream.available();
+        byte[] i = new byte[available];
+         fileInputStream.read(i);
+
+
+        String hello = new String(i);
+        long l = System.currentTimeMillis();
+       // reverseRecursively(hello);
+        l = soutTime(l);
+        revertByStringBuilder(hello);
+        l = soutTime(l);
+       revertByArray(hello);
+        l = soutTime(l);
+       reverseStrange(hello);
+        l = soutTime(l);
+       simpleReverse(hello);
+        l = soutTime(l);
+    }
+
+    private static long soutTime(long l) {
+        long l1 = System.currentTimeMillis();
+        System.out.println(l1 - l);
+        return l1;
     }
 
     public static String reverseRecursively(String str) {
@@ -36,21 +58,14 @@ public class RevertString {
 
     public static String reverseStrange(String s) {
         char[] value = s.toCharArray();
-        System.out.println("char length: " + s.toCharArray().length);
         int n = s.toCharArray().length - 1;
-        System.out.println("n : " + n);
         for (int j = (n - 1) >> 1; j >= 0; j--) {
-            System.out.println("------------------------------------");
-            System.out.println("before: " + new String(value));
-            System.out.println("j:" + j);
             int k = n - j;
-            System.out.println("k:" + k);
             char cj = value[j];
             char ck = value[k];
             value[j] = ck;
             value[k] = cj;
-            System.out.println("after: " + new String(value));
-            System.out.println("------------------------------------");
+
         }
         return new String(value);
     }
@@ -58,8 +73,12 @@ public class RevertString {
     public static String simpleReverse(String s) {
         char[] value = s.toCharArray();
         int length = s.toCharArray().length;
-        for (int i = 0; i >= (length - 1) / 2; i--) {
+        int n = length -1;
+        for (int i = 0; i < (length >> 1); i++) {
             char a = value[i];
+            char b = value[n-i];
+            value[i] = b;
+            value[n-i] = a;
 
         }
         return new String(value);
