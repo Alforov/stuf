@@ -7,7 +7,7 @@ public class B extends A
 {
     public static String b = "it's b static field";
     static {
-        b = "it's b static field";
+        b = "it's b static field!!!!!!!!1";
         System.out.println(b);
     }
     public String oB="is ob ";
@@ -19,6 +19,19 @@ public class B extends A
 
     @Override
     public String test() throws RuntimeException {
-        return "";
+        A a = new B();
+        test3(a);
+        return null;
+    }
+
+    @Override
+    public void test1(String a1, String t2) {
+        super.test1(a1,t2);
+    }
+    public void test3(A a) {
+        System.out.println(a);
+    }
+    public void test3(B a) {
+        System.out.println(a);
     }
 }

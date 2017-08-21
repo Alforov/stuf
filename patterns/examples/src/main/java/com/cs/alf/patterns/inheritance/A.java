@@ -25,4 +25,7 @@ public class A
     public String test() throws Exception{
         return null;
     }
+    public void test1(String a1,String t2){
+        System.out.println(a1+t2);
+    }
 }

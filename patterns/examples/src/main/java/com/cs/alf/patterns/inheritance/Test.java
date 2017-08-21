@@ -5,7 +5,7 @@ package com.cs.alf.patterns.inheritance;
  */
 public class Test {
     public static void main(String[] args) {
-        new B();
+        B b = new B();
 
     }
 }
