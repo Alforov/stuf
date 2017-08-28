@@ -1,0 +1,2 @@
+http://www.wideskills.com/spring/spring-bean-lifecycle
+http://www.wideskills.com/spring/spring-beanpost-processors
