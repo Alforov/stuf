@@ -1,0 +1,4 @@
+http://www.artima.com/intv/solid.html
+http://www.artima.com/intv/handcuffs.html
+http://www.javaworld.com/article/3142626/core-java/are-checked-exceptions-good-or-bad.html
+https://stackoverflow.com/questions/613954/the-case-against-checked-exceptions
