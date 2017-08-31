@@ -1,0 +1,14 @@
+Java has two parts of memory - stack memory and heap memory.
+
+
+Stack
+a memory space reserved for your process by the OS;
+stack use LIFO quequ - were allocated information about executed method, reference for Object, and local primitive value.
+There I see some common sense with Hypermadia in REST like heap server and stack is client. And client use links to condact objects.
+each method has its own stack
+a method stack exists only during the lifetime of that method: from the calling moment until the return moment;
+
+Heap a memory space managed by the OS and used by processes to get additional space at run-time;
+this area it is a global, meaning that any process can use it (of course, processes can’t read or write in another process Heap reserved area);
+the role of this memory is to provide additional memory resources to processes that need that supplementary space at run-time (for example, you have a simple Java application that is constructing an array with values from console);
+the space needed at run-time by a process is determined by functions like new (remember, it the same function used to create objects in Java) which are used to get additional space in Heap.
