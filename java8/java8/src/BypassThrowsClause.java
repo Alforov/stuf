@@ -9,7 +9,6 @@ public class BypassThrowsClause {
     public static void main(String[] args) {
         BypassThrowsClause bypassThrowsClause = new BypassThrowsClause();
         bypassThrowsClause.throwIOException();
-
     }
     private void throwIOException() {
         try {
