@@ -9,11 +9,13 @@ public class DeadLock {
 
 
     public static void main(String[] args) {
-        new Thread(()->{doSomthing();}).start();
-        new Thread(()->{doAnohterSomthing();}).start();
+        new Thread(()->{
+            doSomething();}).start();
+        new Thread(()->{
+            doAnotherSomething();}).start();
     }
 
-    private static void doSomthing(){
+    private static void doSomething(){
         synchronized (monitor1){
             try {
                 System.out.println("start to wait");
@@ -28,7 +30,7 @@ public class DeadLock {
         }
     }
 
-    private static void doAnohterSomthing(){
+    private static void doAnotherSomething(){
         synchronized (monitor2){
             synchronized (monitor1){
                 System.out.println("2");

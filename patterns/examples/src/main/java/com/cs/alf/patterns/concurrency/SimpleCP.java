@@ -1,40 +1,29 @@
 package com.cs.alf.patterns.concurrency;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by root1 on 26.03.17.
+ * Created by root1 on 05.09.17.
  */
-public class ProducerConsumer {
+public class SimpleCP {
     public static void main(String[] args) {
         String[] holder = new String[1];
-        AtomicBoolean atomicBoolean = new AtomicBoolean(true);
-        new Producer(holder,atomicBoolean).start();
-        new Consumer(holder,atomicBoolean).start();
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-        atomicBoolean.set(false);
-        System.out.println("The end");
+        new SimpleCP.Consumer(holder).start();
+        new SimpleCP.Producer(holder).start();
     }
 
     private static class Producer extends Thread {
         private final String[] holder;
-        private final AtomicBoolean flag;
 
-        public Producer(String[] holder, AtomicBoolean flag) {
+        public Producer(String[] holder) {
             this.holder = holder;
-            this.flag = flag;
         }
 
         @Override
         public void run() {
-            int count=0;
-            while (flag.get()) {
-
                 synchronized (holder) {
+                    while (true){
                     while (holder[0] != null) {
                         try {
                             holder.wait();
@@ -43,31 +32,26 @@ public class ProducerConsumer {
                         }
                     }
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    holder[0] = "Hi from producer " + count++;
+                    holder[0] = "Hi from producer ";
                     System.out.println(holder[0]);
                     holder.notifyAll();
                 }
-            }
-            System.out.println("producer is stopped");
-        }
+        }}
     }
 
     private static class Consumer extends Thread {
         private final String[] holder;
-        private final AtomicBoolean flag;
 
-        public Consumer(String[] holder, AtomicBoolean flag) {
+        public Consumer(String[] holder) {
             this.holder = holder;
-            this.flag = flag;
         }
 
         @Override
-        public void run() {
-            while (flag.get()){
+        public void run() {while (true){
                 synchronized (holder){
                     while (holder[0] == null){
                         try {
@@ -85,9 +69,8 @@ public class ProducerConsumer {
                     System.out.println("Consumer get result: " + result);
                     holder[0] = null;
                     holder.notifyAll();
-                }
             }
-        }
+        }}
     }
 
 }
