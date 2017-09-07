@@ -30,4 +30,95 @@ composite class does not impose any invariants involving the multiple state vari
 Most composite classes are not as simple as VisualComponent: they have invariants that relate their component state
 variables. NumberRange in Listing 4.10 uses two AtomicIntegers to manage its state, but imposes an additional
 constraintͲthat the first number be less than or equal to the second.
+If a class is composed of multiple independent threadͲsafe state variables and has no operations that have any invalid
+state transitions, then it can delegate thread safety to the underlying state variables.cd
+
+
+
+If a state variable is threadͲsafe, does not participate in any invariants that constrain its value, and has no prohibited
+state transitions for any of its operations, then it can safely be published.
+
+4.4.1. ClientǦside Locking
+
+@ThreadSafe
+public class ListHelper<E> {
+ public List<E> list =
+ Collections.synchronizedList(new ArrayList<E>());
+ ...
+ public boolean putIfAbsent(E x) {
+ synchronized (list) {
+ boolean absent = !list.contains(x);
+ if (absent)
+ list.add(x);
+ return absent;
+ }
+ }
+}
+
+
+4.4.2. Composition
+@ThreadSafe
+public class ImprovedList<T> implements List<T> {
+ private final List<T> list;
+ public ImprovedList(List<T> list) { this.list = list; }
+ public synchronized boolean putIfAbsent(T x) {
+ boolean contains = list.contains(x);
+ if (contains)
+ list.add(x);
+ return !contains;
+ }
+ public synchronized void clear() { list.clear(); }
+ // ... similarly delegate other List methods
+} 
+
+4.5. Documenting Synchronization Policies
+
+Document a class's thread safety guarantees for its clients; document its synchronization policy for its maintainerss
+java.text.SimpleDateFormat isn't threadͲsafe
+
+
+
+
+5.1. Synchronized Collections
+
+The synchronized collection classes include Vector and Hashtable, part of the original JDK, as well as their cousins
+added in JDK 1.2, the synchronized wrapper classes created by the Collections.synchronizedXxx factory methods.
+These classes achieve thread safety by encapsulating their state and synchronizing every public method so that only one
+thread at a time can access the collection state.
+5.1.1. Problems with Synchronized Collections
+
+
+public static Object getLast(Vector list) {
+ int lastIndex = list.size() - 1;
+ return list.get(lastIndex);
+}
+public static void deleteLast(Vector list) {
+ int lastIndex = list.size() - 1;
+ list.remove(lastIndex);
+} 
+
+the problem of compound actions.
+
+5.1.2. Iterators and Concurrentmodificationexception
+
+5.2. Concurrent Collections
+Java 5.0 improves on the synchronized collections by providing several concurrent collection classes. Synchronized
+collections achieve their thread safety by serializing all access to the collection's state. The cost of this approach is poor
+concurrency; when multiple threads contend for the collectionͲwide lock, throughput suffers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
