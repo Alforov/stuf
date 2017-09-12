@@ -104,5 +104,279 @@ enough to publish that object safely
 
 
 
+The most useful policies for using and sharing objects in a concurrent program are:
+ThreadͲconfined. A threadͲconfined object is owned exclusively by and confined to one thread, and can be modified by
+its owning thread.
+Shared readͲonly. A shared readͲonly object can be accessed concurrently by multiple threads without additional
+synchronization, but cannot be modified by any thread. Shared readͲonly objects include immutable and effectively
+immutable objects.
+Shared threadͲsafe. A threadͲsafe object performs synchronization internally, so multiple threads can freely access it
+through its public interface without further synchronization.
+Guarded. A guarded object can be accessed only with a specific lock held. Guarded objects include those that are
+encapsulated within other threadͲsafe objects and published objects that are known to be guarded by a specific lock.
+
+While it is possible to write a threadͲsafe program that stores all its state in public static fields, it is a lot harder to verify
+its thread safety or to modify it so that it remains threadͲsafe than one that uses encapsulation appropriately.
+Encapsulation makes it possible to determine that a class is threadͲsafe without having to examine the entire program.
+The design process for a threadͲsafe class should include these three basic elements:
+x Identify the variables that form the object's state;
+x Identify the invariants that constrain the state variables;
+x Establish a policy for managing concurrent access to the object's state.
+An object's state starts with its fields. If they are all of primitive type, the fields comprise the entire state. Counter in
+Listing 4.1 has only one field, so the value field comprises its entire state. T
+
+
+4.2. Instance Confinement
+If an object is not threadͲsafe, several techniques can still let it be used safely in a multithreaded program. You can
+ensure that it is only accessed from a single thread (thread confinement), or that all access to it is properly guarded by a
+lock.
+Encapsulating data within an object confines access to the data to the object's methods, making it easier to ensure that
+the data is always accessed with the appropriate lock held.
+Confined objects must not escape their intended scope. An object may be confined to a class instance (such as a private
+class member), a lexical scope (such as a local variable), or a thread (such as an object that is passed from method to
+method within a thread, but not supposed to be shared across threads). Objects don't escape on their own, of courseͲ
+they need help from the developer, who assists by publishing the object beyond its intended scope.
+@ThreadSafe
+public class PersonSet {
+ @GuardedBy("this")
+ private final Set<Person> mySet = new HashSet<Person>();
+ public synchronized void addPerson(Person p) {
+ mySet.add(p);
+ }
+ public synchronized boolean containsPerson(Person p) {
+ return mySet.contains(p);
+ }
+
+
+
+
+Wait
+A thread can also wake up without being notified, interrupted, or timing out, a so-called spurious wakeup. While this will rarely occur in practice, applications must guard against it by testing for the condition that should have caused the thread to be awakened, and continuing to wait if the condition is not satisfied. In other words, waits should always occur in loops, like this one:
+ synchronized (obj) {
+     while (<condition does not hold>)
+         obj.wait(timeout);
+     ... // Perform action appropriate to condition
+ }
+
+ 
+ 
+4.2.1. The Java Monitor Pattern
+The Java Monitor Pattern
+public class PrivateLock {
+ private final Object myLock = new Object();
+ @GuardedBy("myLock") Widget widget;
+ void someMethod() {
+ synchronized(myLock) {
+ // Access or modify the state of widget
+ }
+ }
+} 
+
+4.3. Delegating Thread Safety
+All but the most trivial objects are composite objects. The Java monitor pattern is useful when building classes from
+scratch or composing classes out of objects that are not threadͲsafe. But what if the components of our class are already
+threadͲsafe? Do we need to add an additional layer of thread safety? The answer is . . . "it depends". In some cases a
+composite made of threadͲsafe components is threadͲsafe (Listings 4.7 and 4.9), and in others it is merely a good start
+(4.10).
+
+delegation helps to avoid locks
+
+
+4.3.2. Independent State Variables
+The delegation examples so far delegate to a single, threadͲsafe state variable. We can also delegate thread safety to
+more than one underlying state variable as long as those underlying state variables are independent, meaning that the
+composite class does not impose any invariants involving the multiple state variables.
+
+4.3.3. When Delegation Fails
+Most composite classes are not as simple as VisualComponent: they have invariants that relate their component state
+variables. NumberRange in Listing 4.10 uses two AtomicIntegers to manage its state, but imposes an additional
+constraintͲthat the first number be less than or equal to the second.
+If a class is composed of multiple independent threadͲsafe state variables and has no operations that have any invalid
+state transitions, then it can delegate thread safety to the underlying state variables.cd
+
+
+
+If a state variable is threadͲsafe, does not participate in any invariants that constrain its value, and has no prohibited
+state transitions for any of its operations, then it can safely be published.
+
+4.4.1. ClientǦside Locking
+
+@ThreadSafe
+public class ListHelper<E> {
+ public List<E> list =
+ Collections.synchronizedList(new ArrayList<E>());
+ ...
+ public boolean putIfAbsent(E x) {
+ synchronized (list) {
+ boolean absent = !list.contains(x);
+ if (absent)
+ list.add(x);
+ return absent;
+ }
+ }
+}
+
+
+4.4.2. Composition
+@ThreadSafe
+public class ImprovedList<T> implements List<T> {
+ private final List<T> list;
+ public ImprovedList(List<T> list) { this.list = list; }
+ public synchronized boolean putIfAbsent(T x) {
+ boolean contains = list.contains(x);
+ if (contains)
+ list.add(x);
+ return !contains;
+ }
+ public synchronized void clear() { list.clear(); }
+ // ... similarly delegate other List methods
+} 
+
+4.5. Documenting Synchronization Policies
+
+Document a class's thread safety guarantees for its clients; document its synchronization policy for its maintainerss
+java.text.SimpleDateFormat isn't threadͲsafe
+
+
+
+
+5.1. Synchronized Collections
+
+The synchronized collection classes include Vector and Hashtable, part of the original JDK, as well as their cousins
+added in JDK 1.2, the synchronized wrapper classes created by the Collections.synchronizedXxx factory methods.
+These classes achieve thread safety by encapsulating their state and synchronizing every public method so that only one
+thread at a time can access the collection state.
+5.1.1. Problems with Synchronized Collections
+
+
+public static Object getLast(Vector list) {
+ int lastIndex = list.size() - 1;
+ return list.get(lastIndex);
+}
+public static void deleteLast(Vector list) {
+ int lastIndex = list.size() - 1;
+ list.remove(lastIndex);
+} 
+
+the problem of compound actions.
+
+5.1.2. Iterators and Concurrentmodificationexception
+
+5.2. Concurrent Collections
+Java 5.0 improves on the synchronized collections by providing several concurrent collection classes. Synchronized
+collections achieve their thread safety by serializing all access to the collection's state. The cost of this approach is poor
+concurrency; when multiple threads contend for the collectionͲwide lock, throughput suffers.
+
+
+
+
+
+ConcurrentHashMap -disadvantage ConcurrentHashMap cannot be locked for exclusive access,
+
+CopyOnWriteArrayList is a concurrent replacement for a synchronized List that offers better concurrency in some
+common situations and eliminates the need to lock or copy the collection during iteration. (Similarly,
+CopyOnWriteArraySet is a concurrent replacement for a synchronized Set.)
+
+
+BlockingQueue
+
+ConcurrentSkipListMap
+ConcurrentSkipListSet
+which are concurrent replacements for a synchronized
+SortedMap or SortedSet (such as TreeMap or TreeSet wrapped with synchronizedMap).
+
+5.5.1. Latches
+A latch is a synchronizer that can delay the progress of threads until it reaches its terminal state [CPJ 3.4.2]. A latch acts
+as a gate: until the latch reaches the terminal state the gate is closed and no thread can pass, and in the terminal state
+the gate opens, allowing all threads to pass. Once the latch reaches the terminal state, it cannot change state again, so it
+remains open forever. Latches can be used to ensure that certain activities do not proceed until other oneͲtime
+activities complete, such as:
+x Ensuring that a computation does not proceed until resources it needs have been initialized. A simple binary
+(twoͲstate) latch could be used to indicate "Resource R has been initialized", and any activity that requires R
+would wait first on this latch.
+x Ensuring that a service does not start until other services on which it depends have started. Each service would
+have an associated binary latch; starting service S would involve first waiting on the latches for other services on
+which S depends, and then releasing the S latch after startup completes so any services that depend on S can
+then proceed.
+x Waiting until all the parties involved in an activity, for instance the players in a multiͲplayer game, are ready to
+proceed. In this case, the latch reaches the terminal state after all the players are ready
+
+CountDownLatch is a flexible latch implementation that can be used in any of these situations; it allows one or more
+threads to wait for a set of events to occur. The latch state consists of a counter initialized to a positive number,
+representing the number of events to wait for. The countDown method decrements the counter, indicating that an event
+has occurred, and the await methods wait for the counter to reach zero, which happens when all the events have
+occurred. If the counter is nonzero on entry, await blocks until the counter reaches zero, the waiting thread is
+interrupted, or the wait times out.
+
+5.5.3. Semaphores
+Counting semaphores are used to control the number of activities that can access a certain resource or perform a given
+action at the same time [CPJ 3.4.1]. Counting semaphores can be used to implement resource pools or to impose a
+bound on a collection.
+A Semaphore manages a set of virtual permits; the initial number of permits is passed to the Semaphore constructor.
+Activities can acquire permits (as long as some remain) and release permits when they are done with them. If no permit
+is available, acquire blocks until one is (or until interrupted or the operation times out). The release method returns a
+permit to the semaphore. [4] A degenerate case of a counting semaphore is a binary semaphore, a Semaphore with an
+initial count of one. A binary semaphore can be used as a mutex with nonͲreentrant locking semantics; whoever holds
+the sole permit holds the mutex.
+
+
+
+Summary of Part I
+We've covered a lot of material so far! The following "concurrency cheat sheet" summarizes the main concepts and
+rules presented in Part I.
+x It's the mutable state, stupid. [1]
+All concurrency issues boil down to coordinating access to mutable state. The less mutable state, the easier it is to
+ensure thread safety.
+x Make fields final unless they need to be mutable.
+x Immutable objects are automatically threadͲsafe.
+Immutable objects simplify concurrent programming tremendously. They are simpler and safer, and can be shared
+freely without locking or defensive copying.
+x Encapsulation makes it practical to manage the complexity.
+70 Java Concurrency In Practice
+You could write a threadͲsafe program with all data stored in global variables, but why would you want to?
+Encapsulating data within objects makes it easier to preserve their invariants; encapsulating synchronization within
+objects makes it easier to comply with their synchronization policy.
+x Guard each mutable variable with a lock.
+x Guard all variables in an invariant with the same lock.
+x Hold locks for the duration of compound actions.
+x A program that accesses a mutable variable from multiple threads without synchronization is a broken program.
+x Don't rely on clever reasoning about why you don't need to synchronize.
+x Include thread safety in the design processor explicitly document that your class is not threadͲsafe.
+x Document your synchronization policy.
+[1] During the 1992 U.S. presidential election, electoral strategist James Carville hung a sign in Bill Clinton's campaign headquarters reading "The
+economy, stupid", to keep the campaign on message
+
+6.2.2. Execution Policies
+The value of decoupling submission from execution is that it lets you easily specify, and subsequently change without
+great difficulty, the execution policy for a given class of tasks. An execution policy specifies the "what, where, when, and
+how" of task execution, including:
+Listing 6.6. Executor that Executes Tasks Synchronously in the Calling Thread.
+
+x In what thread will tasks be executed?
+x In what order should tasks be executed (FIFO, LIFO, priority order)?
+x How many tasks may execute concurrently?
+x How many tasks may be queued pending execution?
+x If a task has to be rejected because the system is overloaded, which task should be selected as the victim, and
+how should the application be notified?
+x What actions should be taken before or after executing a task?
+Execution policies are a resource management tool, and the optimal policy depends on the available computing
+resources and your quality?of?service requirements. By limiting the number of concurrent tasks, you can ensure that the
+application does not fail due to resource exhaustion or suffer performance problems due to contention for scarce
+resources.[3] Separating the specification of execution policy from task submi
+
+
+6.2.3. Thread Pools
+A thread pool, as its name suggests, manages a homogeneous pool of worker threads. A thread pool is tightly bound to
+a work queue holding tasks waiting to be executed. Worker threads have a simple life: request the next task from the
+work queue, execute it, and go back to waiting for another task.
+Executing tasks in pool threads has a number of advantages over the thread?per?task approach. Reusing an existing
+thread instead of creating a new one amortizes thread creation and teardown costs over multiple requests. As an added
+bonus, since the worker thread often already exists at the time the request arrives, the latency associated with thread
+creation does not delay task execution, thus improving responsiveness. By properly tuning the size of the thread pool,
+you can have enough threads to keep the processors busy while not having so many that your application runs out of
+memory or thrashes due to competition among threads for resources.
+
+
+
 
 
