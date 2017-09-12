@@ -1,0 +1,29 @@
+6.2.2. Execution Policies
+The value of decoupling submission from execution is that it lets you easily specify, and subsequently change without
+great difficulty, the execution policy for a given class of tasks. An execution policy specifies the "what, where, when, and
+how" of task execution, including:
+Listing 6.6. Executor that Executes Tasks Synchronously in the Calling Thread.
+
+x In what thread will tasks be executed?
+x In what order should tasks be executed (FIFO, LIFO, priority order)?
+x How many tasks may execute concurrently?
+x How many tasks may be queued pending execution?
+x If a task has to be rejected because the system is overloaded, which task should be selected as the victim, and
+how should the application be notified?
+x What actions should be taken before or after executing a task?
+Execution policies are a resource management tool, and the optimal policy depends on the available computing
+resources and your quality?of?service requirements. By limiting the number of concurrent tasks, you can ensure that the
+application does not fail due to resource exhaustion or suffer performance problems due to contention for scarce
+resources.[3] Separating the specification of execution policy from task submi
+
+
+6.2.3. Thread Pools
+A thread pool, as its name suggests, manages a homogeneous pool of worker threads. A thread pool is tightly bound to
+a work queue holding tasks waiting to be executed. Worker threads have a simple life: request the next task from the
+work queue, execute it, and go back to waiting for another task.
+Executing tasks in pool threads has a number of advantages over the thread?per?task approach. Reusing an existing
+thread instead of creating a new one amortizes thread creation and teardown costs over multiple requests. As an added
+bonus, since the worker thread often already exists at the time the request arrives, the latency associated with thread
+creation does not delay task execution, thus improving responsiveness. By properly tuning the size of the thread pool,
+you can have enough threads to keep the processors busy while not having so many that your application runs out of
+memory or thrashes due to competition among threads for resources.
