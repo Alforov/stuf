@@ -7,11 +7,16 @@ import java.math.BigDecimal;
  */
 public class D extends C {
     @Override
-    public BigDecimal cc() {
+    public synchronized BigDecimal cc() {
         try {
             super.cc();
         } catch (Exception e) {
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "{D}";
     }
 }

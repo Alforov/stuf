@@ -378,5 +378,74 @@ memory or thrashes due to competition among threads for resources.
 
 
 
+decoupling task submission from execution policy
+Types of
+tasks that require specific execution policies include:
+Dependent tasks. The most well behaved tasks are independent: those that do not depend on the timing, results, or side
+effects of other tasks. When executing independent tasks in a thread pool, you can freely vary the pool size and
+configuration without affecting anything but performance. On the other hand, when you submit tasks that depend on
+other tasks to a thread pool, you implicitly create constraints on the execution policy that must be carefully managed to
+avoid liveness problems (see Section 8.1.1).
+
+Tasks that exploit thread confinement. SingleͲthreaded executors make stronger promises about concurrency than do
+arbitrary thread pools. They guarantee that tasks are not executed concurrently, which allows you to relax the thread
+safety of task code. Objects can be confined to the task thread, thus enabling tasks designed to run in that thread to
+access those objects without synchronization, even if those resources are not threadͲsafe. This forms an implicit
+coupling between the task and the execution policy Ͳthe tasks require their executor to be singleͲthreaded.[1] In this
+case, if you changed the Executor from a singleͲthreaded one to a thread pool, thread safety could be lost.
+
+ResponseͲtimeͲsensitive tasks. GUI applications are sensitive to response time: users are annoyed at long delays
+between a button click and the corresponding visual feedback. Submitting a longͲrunning task to a singleͲthreaded
+executor, or submitting several longͲrunning tasks to a thread pool with a small number of threads, may impair the
+responsiveness of the service managed by that Executor.
+
+Tasks that use ThreadLocal. ThreadLocal allows each thread to have its own private "version" of a variable. However,
+executors are free to reuse threads as they see fit. The standard Executor implementations may reap idle threads when
+demand is low and add new ones when demand is high, and also replace a worker thread with a fresh one if an
+unchecked exception is thrown from a task. ThreadLocal makes sense to use in pool threads only if the threadͲlocal
+value has a lifetime that is bounded by that of a task; Thread-Local should not be used in pool threads to communicate
+values between tasks.
+
+Thread pools work best when tasks are homogeneous and independent. Mixing longͲrunning and shortͲrunning tasks
+risks "clogging" the pool unless it is very large; submitting tasks that depend on other tasks risks deadlock unless the
+pool is unbounded. Fortunately, requests in typical networkͲbased server applications Ͳweb servers, mail servers, file
+serversͲusually meet these guidelines.
 
 
+8.3.3. Saturation Policies
+When a bounded work queue fills up, the saturation policy comes into play. The saturation policy for a
+ThreadPoolExecutor can be modified by calling setRejectedExecutionHandler. (The saturation policy is also used
+when a task is submitted to an Executor that has been shut down.) Several implementations of
+RejectedExecutionHandler are provided, each implementing a different saturation policy: AbortPolicy,
+CallerRunsPolicy, DiscardPolicy, and DiscardOldestPolicy.
+
+The default policy, abort, causes execute to throw the unchecked Rejected-ExecutionException; the caller can catch
+this exception and implement its own overflow handling as it sees fit. The discard policy silently discards the newly
+submitted task if it cannot be queued for execution; the discardͲoldest policy discards the task that would otherwise be
+executed next and tries to resubmit the new task. (If the work queue is a priority queue, this discards the highestͲ
+priority element, so the combination of a discardͲoldest saturation policy and a priority queue is not a good one.)
+The callerͲruns policy implements a form of throttling that neither discards tasks nor throws an exception, but instead
+tries to slow down the flow of new tasks by pushing some of the work back to the caller. It executes the newly
+submitted task not in a pool thread, but in the thread that calls execute. If we modified our WebServer example to use
+a bounded queue and the callerͲruns policy, after all the pool threads were occupied and the work queue filled up the
+next task would be executed in the main thread during the call to execute. Since this would probably take some time,
+the main thread cannot submit any more tasks for at least a little while, giving the worker threads some time to catch
+up on the backlog. The main thread would also not be calling accept during this time, so incoming requests will queue
+up in the TCP layer instead of in the application. If the overload persisted, eventually the TCP layer would decide it has
+queued enough connection requests and begin discarding connection requests as well. As the server becomes
+overloaded, the overload is gradually pushed outwardͲ from the pool threads to the work queue to the application to
+the TCP layer, and eventually to the clientͲenabling more graceful degradation under load.
+
+
+
+Chapter 10. Avoiding Liveness Hazards
+10.1. Deadlock
+Lock-ordering Deadlocks
+Dynamic LockǦordering Deadlock
+. Deadlocks Between Cooperating Objects
+
+
+
+One of the primary reasons to use threads is to improve performance.[1] Using threads can improve resource utilization
+by letting applications more easily exploit available processing capacity, and can improve responsiveness by letting
+applications begin processing new tasks immediately while existing tasks are still running.

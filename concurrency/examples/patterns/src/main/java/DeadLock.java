@@ -2,8 +2,8 @@
  * Created by root1 on 26.03.17.
  */
 public class DeadLock {
-    public static final Object monitor1 = new Object();
-    public static final Object monitor2 = new Object();
+    public static final Object leftMonitor = new Object();
+    public static final Object rightMonitor = new Object();
 
 
     public static void main(String[] args) {
@@ -12,7 +12,7 @@ public class DeadLock {
     }
 
     private static void doSomthing(){
-        synchronized (monitor1){
+        synchronized (leftMonitor){
             try {
                 System.out.println("start to wait");
                 Thread.sleep(1000_0);
@@ -20,15 +20,15 @@ public class DeadLock {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            synchronized (monitor2){
+            synchronized (rightMonitor){
                 System.out.println("1");
             }
         }
     }
 
     private static void doAnohterSomthing(){
-        synchronized (monitor2){
-            synchronized (monitor1){
+        synchronized (rightMonitor){
+            synchronized (leftMonitor){
                 System.out.println("2");
             }
         }

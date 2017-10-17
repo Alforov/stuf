@@ -1,6 +1,8 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -9,7 +11,7 @@ import java.util.stream.Collectors;
 public abstract class StreamsTest {
     public static void main(String[] args) {
         List<String> list = Arrays.asList("#four #one #two #three", "#one #two", "La #one #four");
-        Map<String, Long> collect = list.stream().map(it -> it.split(" ")).flatMap(Arrays::stream).filter(s -> s.startsWith("#")).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(v1,v2)->v2, LinkedHashMap::new ));
+        Map<String, Long> collect = list.stream().map(it -> it.split(" ")).flatMap(Arrays::stream).filter(s -> s.startsWith("#")).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v2, LinkedHashMap::new));
         System.out.println(collect);
         //  list.stream().map(it -> it.split(" ")).flatMap(Arrays::stream).filter(s -> s.startsWith("#")).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).forEach(System.out::print);
         //  System.out.println();

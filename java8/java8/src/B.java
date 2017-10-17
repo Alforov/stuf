@@ -3,8 +3,7 @@
  */
 public class B {
 
-    public static void show(){
-
-        System.out.println("Static method called B");
+    public  Object show() throws Throwable{
+        return 0;
     }
 }

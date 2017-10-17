@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,7 +8,13 @@ import java.util.List;
 public class Int {
 
     public static void main(String[] args) {
-        String s = null;
-        System.out.println(new StringBuilder().append(s).toString());
+        int order = 0;
+        for (int i = 0; i<10;i++){
+        test(order++);}
+
+    }
+
+    private static void test(int i) {
+        System.out.println(i);
     }
 }

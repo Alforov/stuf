@@ -37,13 +37,24 @@ public class Server {
                 InputStreamReader(fromclient.getInputStream()));
         out = new PrintWriter(fromclient.getOutputStream(),true);
         String         input,output;
-
-     //   System.out.println("Wait for messages");
+        //   System.out.println("Wait for messages");
         while ((input = in.readLine()) != null) {
            // if (input.equalsIgnoreCase("exit")) break;
           //  out.println("S ::: "+input);
            System.out.println(input);
         }
+        out.append("HTTP/1.1 200 OK\n" +
+                "Server: Microsoft-IIS/4.0\n" +
+                "Date: Mon, 5 Jan 2004 13:13:33 GMT Content-Type: text/html\n" +
+                "Last-Modified: Mon, 5 Jan 2004 13:13:12 GMT Content-Length: 112\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "<title>HTTP Response Example</title> </head>\n" +
+                "<body>\n" +
+                "Welcome to Brainy Software\n" +
+                "</body>\n" +
+                "</html>");
+        out.flush();
         out.close();
         in.close();
         fromclient.close();

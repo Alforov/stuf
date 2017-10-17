@@ -3,15 +3,14 @@
  */
 public class A extends B{
 
-
-    public static void show(){
-
-        System.out.println("Static method called");
+    @Override
+    public Integer show() throws Throwable {
+        return 1;
     }
 
     public static void main(String[] args)  {
         A obj = null;
-        ((B)obj).show();
+       // ((B)obj).show();
 
     }
 }
