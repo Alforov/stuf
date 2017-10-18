@@ -3,61 +3,57 @@ package com.cs.alf;
 /**
  * Created by mikhail_alferov on 13.05.2017.
  */
-import java.io.*;
-import java.net.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
 
     public static void main(String[] args) throws IOException {
-       // System.out.println("Welcome to Server side");
-        BufferedReader in = null;
-        PrintWriter    out= null;
+        // System.out.println("Welcome to Server side");
+
 
         ServerSocket servers = null;
-        Socket       fromclient = null;
+        Socket fromclient = null;
 
         // create server socket
-        try {
-            servers = new ServerSocket(9999);
-        } catch (IOException e) {
-         //   System.out.println("Couldn't listen to port 4444");
-            System.exit(-1);
-        }
 
-        try {
+        servers = new ServerSocket(9999);
+
+
         //    System.out.print("Waiting for a client...");
-            fromclient= servers.accept();
-        //    System.out.println("Client connected");
-        } catch (IOException e) {
-          //  System.out.println("Can't accept");
-            System.exit(-1);
+        while (true) {
+            final Socket finalFromclient = servers.accept();
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        BufferedReader in = null;
+                        PrintWriter out = null;
+                        in = new BufferedReader(new
+                                InputStreamReader(finalFromclient.getInputStream()));
+                        out = new PrintWriter(finalFromclient.getOutputStream(), true);
+                        String input;
+                        System.out.println("---------START----------------");
+                        while ((input = in.readLine()) != null) {
+                            System.out.println(input);
+                        }
+                        System.out.println("----------END---------------");
+                        System.out.println("----------------------------");
+                        out.close();
+                        in.close();
+                        finalFromclient.close();
+                    } catch (Exception e) {
+
+                    }
+
+                }
+            }).start();
+            //    System.out.println("Client connected");
         }
 
-        in  = new BufferedReader(new
-                InputStreamReader(fromclient.getInputStream()));
-        out = new PrintWriter(fromclient.getOutputStream(),true);
-        String         input,output;
-        //   System.out.println("Wait for messages");
-        while ((input = in.readLine()) != null) {
-           // if (input.equalsIgnoreCase("exit")) break;
-          //  out.println("S ::: "+input);
-           System.out.println(input);
-        }
-        out.append("HTTP/1.1 200 OK\n" +
-                "Server: Microsoft-IIS/4.0\n" +
-                "Date: Mon, 5 Jan 2004 13:13:33 GMT Content-Type: text/html\n" +
-                "Last-Modified: Mon, 5 Jan 2004 13:13:12 GMT Content-Length: 112\n" +
-                "<html>\n" +
-                "<head>\n" +
-                "<title>HTTP Response Example</title> </head>\n" +
-                "<body>\n" +
-                "Welcome to Brainy Software\n" +
-                "</body>\n" +
-                "</html>");
-        out.flush();
-        out.close();
-        in.close();
-        fromclient.close();
-        servers.close();
     }
 }

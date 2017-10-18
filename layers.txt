@@ -1,0 +1,119 @@
+Java developer basic knowledge.
+
+Communication between server side and client(like Web-browser).In most cases for this purpose we use HTTP.
+Before considering HTTP let's see what is encoding and URL.
+---------------------------------------------------------------------------------------------------------------------------
+ASCII abbreviated from American Standard Code for Information Interchange, is a character encoding standard for electronic communication
+ASCII reserves the first 32 codes (numbers 0–31 decimal) for control characters:
+The original ASCII table is encoded on 7 bits therefore it has 128 characters.
+Nowadays most readers/editors use an "extended" ASCII table (from ISO 8859-1), which is encoded on 8 bits and
+enjoys 256 characters (including Á, Ä, Œ, é, è and other characters useful for european languages as well as mathematical glyphs and
+other symbols).
+
+Unicode is a computing industry standard for the consistent encoding, representation, and handling of text
+Unicode: 16 binary digits. 65536 characters.
+Extend Unicode: 32 binary digits
+In Java we use char is consist from 2 bytes or 16 bites or in base-10 0..65535 or in base-16 \u0000.. \uffff
+char ch = 'a';
+char uniChar = '\u03A9';
+
+
+
+Unicode Transformation Format(UTF-8)
+Thus was invented the brilliant concept of UTF-8.
+UTF-8 was another system for storing your string of Unicode code points, those magic U+ numbers, in memory using 8 bit bytes.
+In UTF-8, every code point from 0-127 is stored in a single byte.
+Only code points 128 and above are stored using 2, 3, in fact, up to 6 bytes.
+
+If you have a string, in memory, in a file, or in an email message,
+you have to know what encoding it is in or you cannot interpret it or display it to users correctly.
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+Uniform Resource Locator (URL) is a reference to a web resource that specifies its location on a computer network.
+A URL is a specific type of Uniform Resource Identifier(URI)
+Every HTTP URL conforms to the syntax of a generic URI. A generic URI is of the form:
+         scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment]
+
+Examples of schemes include: http(s), ftp, mailto, file, data
+
+Authority part user [user[:password] An optional authentication section of a user name and password,
+separated by a colon, followed by an at symbol (@)
+
+A host, consisting of either a registered name (including but not limited to a hostname), or an IP address.
+
+An optional [port] number, separated from the hostname by a colon
+
+A path, which contains data, usually organized in hierarchical form, that appears as a sequence of segments separated by slashes
+
+An optional query, separated from the preceding part by a question mark (?), containing a query string of non-hierarchical data.
+Its syntax is not well defined, but by convention is most often a sequence of attribute–value pairs separated by a delimiter.
+
+An optional fragment, separated from the preceding part by a hash (#).
+The fragment contains a fragment identifier providing direction to a secondary resource,
+such as a section heading in an article identified by the remainder of the URI.
+When the primary resource is an HTML document, the fragment is often an id attribute of a specific element,
+and web browsers will scroll this element into view.
+
+Example URL:  http://login:password@localhost:9999/UPBS/paymentBroker/PaymentBroker-Service
+If we input this URL in browser, browser will make GET request with basic authorization header (Authorization: Basic bG9naW46cGFzc3dvcmQ=)
+
+URL encoding(Percent-encoding)
+URLs can only be sent over the Internet using the ASCII character-set.
+Since URLs often contain characters outside the ASCII set, the URL has to be converted into a valid ASCII format.
+URL encoding replaces unsafe ASCII characters with a "%" followed by two hexadecimal digits.
+URLs cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign or with %20.
+
+---------------------------------------------------------------------------------------------------------------------------
+So, let's consider what is HTTP
+and how we should use it:
+Example of request:       GET /wiki/HTTP HTTP/1.0
+Request consist from METHOD,URI(Uniform Resource Identifier)
+
+Example of response:     HTTP/1.0 200 OK
+
+
+methods: 
+
+                                                                                    Idempotent                Safe
+    GET     Return state of resource                                                    Y                       Y
+	HEAD	Same as GET but returns only HTTP headers and no document body
+	OPTIONS	Returns the HTTP methods that the server supports
+	POST    Create resource
+	PUT	    Uploads a representation of the specified URI
+	PATCH   Change some part of resource
+	DELETE	Deletes the specified resource
+	LINK    Add link to another resource 
+	UNLINK  Remove link to another resource
+
+
+HTTP Method	Idempotent	Safe
+OPTIONS	yes	yes
+GET	yes	yes
+HEAD	yes	yes
+PUT	yes	no
+POST	no	no
+DELETE	yes	no
+PATCH	no	no
+
+
+
+
+-----------------------------------------------                  
+
+
+ REST
+
+Basic authorization
+
+ XML
+ JSON
+what better
+
+
+Server
+
+Another Servers
+
+DB
