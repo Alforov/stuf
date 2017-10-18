@@ -28,6 +28,7 @@ Only code points 128 and above are stored using 2, 3, in fact, up to 6 bytes.
 If you have a string, in memory, in a file, or in an email message,
 you have to know what encoding it is in or you cannot interpret it or display it to users correctly.
 
+Base64
 
 
 ---------------------------------------------------------------------------------------------------------------------------
@@ -64,6 +65,7 @@ URLs can only be sent over the Internet using the ASCII character-set.
 Since URLs often contain characters outside the ASCII set, the URL has to be converted into a valid ASCII format.
 URL encoding replaces unsafe ASCII characters with a "%" followed by two hexadecimal digits.
 URLs cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign or with %20.
+
 
 ---------------------------------------------------------------------------------------------------------------------------
 So, let's consider what is HTTP
@@ -106,6 +108,8 @@ PATCH	no	no
  REST
 
 Basic authorization
+
+write application that return current date for client by three ways: socket,servlet,spring mvc.
 
  XML
  JSON
