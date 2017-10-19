@@ -1,0 +1,21 @@
+8.3.3.SaturationPolicies
+When a bounded work queue fills up, the saturation policy comes into play. The saturation policy for a
+ThreadPoolExecutor  can be modified by calling setRejectedExecutionHandler . (The saturation policy is also used
+when a task is submitted to an Executor  that has been shut down.) Several implementations of
+RejectedExecutionHandler  are provided, each implementing a different saturation policy: AbortPolicy ,
+CallerRunsPolicy , DiscardPolicy ,and DiscardOldestPolicy .
+Thedefaultpolicy,abort,causes execute tothrowtheunchecked Rejected-ExecutionException ;thecallercancatch
+this exception and implement its own overflow handling as it sees fit. The discard policy silently discards the newly
+submittedtaskifitcannotbequeuedforexecution;thediscardͲoldestpolicydiscardsthetaskthatwouldotherwisebe
+executed next and tries to resubmit the new task. (If the work queue is a priority queue, this discards the highestͲ
+priorityelement,sothecombinationofadiscardͲoldestsaturationpolicyandapriorityqueueisnotagoodone.)
+ThecallerͲrunspolicyimplementsaformofthrottlingthatneitherdiscardstasksnorthrowsanexception,butinstead
+tries to slow down the flow of new tasks by pushing some of the work back to the caller. It executes the newly
+submittedtasknotinapoolthread,butinthethreadthatcalls execute .Ifwemodifiedour WebServer exampletouse
+aboundedqueueandthecallerͲrunspolicy,afterallthepoolthreadswereoccupiedandtheworkqueuefilledupthe
+nexttaskwouldbeexecutedinthemainthreadduringthecallto execute .Sincethiswouldprobablytakesometime,
+themainthreadcannotsubmitanymoretasksforatleastalittlewhile,givingtheworkerthreadssometimetocatch
+uponthebacklog.Themainthreadwouldalsonotbecalling accept duringthistime,soincomingrequestswillqueue
+upintheTCPlayerinsteadofintheapplication.Iftheoverloadpersisted,eventuallytheTCPlayerwoulddecideithas
+queued enough connection requests and begin discarding connection requests as well. As the server becomes
+overloaded,theoverloadisgraduallypushedoutwardͲfromthepoolthreadstotheworkqueu
