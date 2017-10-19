@@ -29,6 +29,11 @@ If you have a string, in memory, in a file, or in an email message,
 you have to know what encoding it is in or you cannot interpret it or display it to users correctly.
 
 Base64
+t's basically a way of encoding arbitrary binary data in ASCII text.
+It takes 4 characters per 3 bytes of data, plus potentially a bit of padding at the end.
+Base64 use for saving bytes in text.
+HTTP it's text protocol, so for transferring bytes we use base64.
+
 
 
 ---------------------------------------------------------------------------------------------------------------------------
@@ -68,42 +73,146 @@ URLs cannot contain spaces. URL encoding normally replaces a space with a plus (
 
 
 ---------------------------------------------------------------------------------------------------------------------------
-So, let's consider what is HTTP
-and how we should use it:
+So, let's consider what is HTTP and how we should use it.
+The Hypertext Transfer Protocol (HTTP) is an application protocol for distributed, collaborative, and hypermedia information systems
+Hypertext is structured text that uses logical links (hyperlinks) between nodes containing text. HTTP is the protocol to exchange or transfer hypertext.
+HTTP functions as a request–response protocol in the client–server computing model.
+HTTP is designed to permit intermediate network elements to improve or enable communications between clients and servers.
+Year	HTTP Version
+1991	   0.9
+1996	   1.0
+1997	   1.1
+2015	   2.0
+
+Proxy support and the Host field:
+HTTP 1.1 has a required Host header by spec.
+This header is useful because it allows you to route a message through proxy servers,
+and also because your web server can distinguish between different sites on the same server.
+
+Persistent connections:
+HTTP 1.1 also allows you to have persistent connections which means that you can have
+more than one request/response on the same HTTP connection.
+In HTTP 1.0 you had to open a new connection for each request/response pair. And after each response the connection would be closed.
+This lead to some big efficiency problems because of TCP Slow Start.
+
+OPTIONS method:
+HTTP/1.1 introduces the OPTIONS method. An HTTP client can use this method to determine the abilities of the HTTP server.
+It's mostly used for Cross Origin Resource Sharing in web applications.
+
+HTTP/2 is a binary, rather than text, protocol, making it more compact and efficient
+It uses a single, multiplexed connection per domain, rather than multiple connections carrying one file each
+Headers are compressed with the purpose‑built HPACK protocol (rather than gzip, as in SPDY)
+HTTP/2 has a complex prioritization scheme to help browsers request the most‑needed files first,
+which is fully supported in NGINX (SPDY had a simpler scheme)
+
+
+
 Example of request:       GET /wiki/HTTP HTTP/1.0
-Request consist from METHOD,URI(Uniform Resource Identifier)
+                          Host: www.blahblahblahblah.com
+
+Request consist from METHOD,URI(Uniform Resource Identifier) and http version
+METHODS:
+                                                                                   Idempotent                Safe
+    GET     Return state of resource                                                    Y                       Y
+	HEAD	Same as GET but returns only HTTP headers and no document body              Y                       Y
+	OPTIONS	Returns the HTTP methods that the server supports                           Y                       Y
+	POST    Create resource                                                             N                       N
+	PUT	    Uploads a representation of the specified URI                               Y                       N
+	PATCH   Change some part of resource                                                N                       N
+	DELETE	Deletes the specified resource                                              Y                       N
 
 Example of response:     HTTP/1.0 200 OK
 
-
-methods: 
-
-                                                                                    Idempotent                Safe
-    GET     Return state of resource                                                    Y                       Y
-	HEAD	Same as GET but returns only HTTP headers and no document body
-	OPTIONS	Returns the HTTP methods that the server supports
-	POST    Create resource
-	PUT	    Uploads a representation of the specified URI
-	PATCH   Change some part of resource
-	DELETE	Deletes the specified resource
-	LINK    Add link to another resource 
-	UNLINK  Remove link to another resource
-
-
-HTTP Method	Idempotent	Safe
-OPTIONS	yes	yes
-GET	yes	yes
-HEAD	yes	yes
-PUT	yes	no
-POST	no	no
-DELETE	yes	no
-PATCH	no	no
-
+Response consist from  http version and response code.
+Some most usage codes:
+1xx: Informational (информационные):
+2xx: Success (успешно):
+200 OK («хорошо»)[2][3];
+201 Created («создано»)[2][3][4];
+202 Accepted («принято»)[2][3];
+203 Non-Authoritative Information («информация не авторитетна»)[2][3];
+3xx: Redirection (перенаправление):
+4xx: Client Error (ошибка клиента):
+400 Bad Request («плохой, неверный запрос»)[2][3][4];
+401 Unauthorized («не авторизован»)[2][3];
+403 Forbidden («запрещено»)[2][3];
+404 Not Found («не найдено»)[2][3];
+405 Method Not Allowed («метод не поддерживается»)[2][3];
+406 Not Acceptable («неприемлемо»)[2][3];
+5xx: Server Error (ошибка сервера):
+500 Internal Server Error («внутренняя ошибка сервера»)[2][3];
+501 Not Implemented («не реализовано»)[2][3];
+502 Bad Gateway («плохой, ошибочный шлюз»)[2][3];
+503 Service Unavailable («сервис недоступен»)[2][3];
+504 Gateway Timeout («шлюз не отвечает»)[2][3];
 
 
+Headers
+Cookies
+Cookies are key/value pairs used by websites to store state informations on the browser.
+Say you have a website (example.com), when the browser requests a webpage the website can send cookies to store informations on the browser.
+Cookies are HTTP Headers. The header is called Cookie:, and it contains your cookie.
+GET /index.html HTTP/1.1
+Host: www.example.com
 
+HTTP/1.1 200 OK
+Content-type: text/html
+Set-Cookie: foo=10
+Set-Cookie: bar=20; Expires=Fri, 30 Sep 2011 11:48:00 GMT
+... rest  of the response
+
+GET /spec.html HTTP/1.1
+Host: www.example.com
+Cookie: foo=10; bar=20
+Accept: */*
+
+Cookie Pros:
+scalability: all the data is stored in the browser so each request can go through a load balancer to different webservers and you have all the informations needed to fullfill the request;
+they can be accessed via javascript on the browser;
+not being on the server they will survive server restarts;
+RESTful: requests don't depend on server state
+Cookie Cons:
+storage is limited to 80 KB (20 cookies, 4 KB each)
+secure cookies are not easy to implement
+
+Cookie in Java:
+1. What is Cookie?
+For us, Cookie is a class from javax.servlet.http package.
+But in the open world, a Cookie represents a sweet Biscuit or Chocolate.
+
+2. What a Cookie can store?
+Cookie stores small strings of data. Cookies stay all through the session.
+Programmer can store the session data with Cookie object.
+It is another style of tracking session data (the first way is using HttpSession interface).
+
+3. Who creates Cookies and where they are stored?
+
+Servlet Cookies are created on the server (by Servlet container) and sent to the client’s browser for temporary storage.
+The Servlet Cookies can be sent to and fro between client and server in their conversation.
+Client is not aware of the entire process of Cookie management as everything is done by the server and
+client is kept completely transparent.
+
+4. What Cookie can do in Servlets?
+
+Servlet Cookies are used mainly for tracking different types of client’s information. That is, the Web server can store data on the client browser in the form of Cookie objects.
+Typical uses of a Cookie are
+To store User name and Password
+To write Shopping cart in e-Commerce application
+Advertisement on client browser
+Customization of Web sites etc.
+
+
+
+Session Cookies: Session cookies get expired and deleted from browser when the browser closes, thereby,
+they do not carry any expiration time constraint parameter.
+They are stored temporarily (just for the usage of session) in the RAM memory.
+
+Persistent Cookies: As the name indicates, they persist long time on the client browser.
+The time of expiration can be set programmatically for each Cookie.
+These Cookies are stored on hard disk. The Cookie gets deleted automatically when the time or age expires.
 -----------------------------------------------                  
 
+https TLS, SSL another ....
 
  REST
 
