@@ -9,8 +9,6 @@ public class A extends B{
     }
 
     public static void main(String[] args)  {
-        A obj = null;
-       // ((B)obj).show();
-
+        System.out.println(Long.valueOf("333"));
     }
 }

@@ -148,6 +148,9 @@ Some most usage codes:
 
 
 Headers
+
+
+
 Cookies
 Cookies are key/value pairs used by websites to store state informations on the browser.
 Say you have a website (example.com), when the browser requests a webpage the website can send cookies to store informations on the browser.
@@ -186,22 +189,18 @@ Programmer can store the session data with Cookie object.
 It is another style of tracking session data (the first way is using HttpSession interface).
 
 3. Who creates Cookies and where they are stored?
-
 Servlet Cookies are created on the server (by Servlet container) and sent to the client’s browser for temporary storage.
 The Servlet Cookies can be sent to and fro between client and server in their conversation.
 Client is not aware of the entire process of Cookie management as everything is done by the server and
 client is kept completely transparent.
 
 4. What Cookie can do in Servlets?
-
 Servlet Cookies are used mainly for tracking different types of client’s information. That is, the Web server can store data on the client browser in the form of Cookie objects.
 Typical uses of a Cookie are
 To store User name and Password
 To write Shopping cart in e-Commerce application
 Advertisement on client browser
 Customization of Web sites etc.
-
-
 
 Session Cookies: Session cookies get expired and deleted from browser when the browser closes, thereby,
 they do not carry any expiration time constraint parameter.
@@ -210,19 +209,25 @@ They are stored temporarily (just for the usage of session) in the RAM memory.
 Persistent Cookies: As the name indicates, they persist long time on the client browser.
 The time of expiration can be set programmatically for each Cookie.
 These Cookies are stored on hard disk. The Cookie gets deleted automatically when the time or age expires.
+
+
+Session
+Session attributes
+
 -----------------------------------------------                  
 
-https TLS, SSL another ....
-
- REST
-
+https, TLS, SSL another ....
 Basic authorization
 
+REST
+MVC pattern
 write application that return current date for client by three ways: socket,servlet,spring mvc.
+write servlets stateful amd stateless(for example using cookies for shop cart)
+write spring mvc controllers
 
- XML
- JSON
-what better
+XML
+JSON
+what is better?
 
 
 Server
@@ -230,3 +235,5 @@ Server
 Another Servers
 
 DB
+jvm params(http://www.javaspecialist.ru/2011/04/java-thread-stack.html)
+http://www.javaspecialist.ru/2011/04/permanent.html
