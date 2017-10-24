@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+        PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+    <context-param>
+        <param-name>email</param-name>
+        <param-value>admin@example.com</param-value>
+    </context-param>
+
+    <servlet>
+        <servlet-name>firstServlet</servlet-name>
+        <servlet-class>ua.example.FirstServlet</servlet-class>
+        <init-param>
+            <param-name>name</param-name>
+            <param-value>John Doe</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>firstServlet</servlet-name>
+        <url-pattern>/test1</url-pattern>
+
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>secondServlet</servlet-name>
+        <servlet-class>ua.example.SecondServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>secondServlet</servlet-name>
+        <url-pattern>/test2</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+</web-app>

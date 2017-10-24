@@ -148,6 +148,16 @@ Some most usage codes:
 
 
 Headers
+HTTP header fields are components of the header section of request and response messages in the Hypertext Transfer Protocol (HTTP).
+frequently used request headers:
+They define the operating parameters of an HTTP transaction.
+Accept	        Content-Types that are acceptable for the response. See Content negotiation.	Accept: text/plain
+Accept-Charset	Character sets that are acceptable.                                 	        Accept-Charset: utf-8
+Authorization   Authentication credentials for HTTP authentication.                             Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+Cookie	        An HTTP cookie previously sent by the server with Set-Cookie (below).	        Cookie: $Version=1; Skin=new;
+Content-Length  The length of the request body in octets (8-bit bytes).	                        Content-Length: 348
+Content-Type	The MIME type of the body of the request (used with POST and PUT requests).  	Content-Type: application/x-www-form-urlencoded
+Host	        The domain name of the server (for virtual hosting)                             Host: en.wikipedia.org:8080Host: en.wikipedia.org
 
 
 
@@ -210,24 +220,77 @@ Persistent Cookies: As the name indicates, they persist long time on the client 
 The time of expiration can be set programmatically for each Cookie.
 These Cookies are stored on hard disk. The Cookie gets deleted automatically when the time or age expires.
 
+--------------------------------------------------------------------------------------------------------------------------
+HTTPS
+HTTPS (also called HTTP over Transport Layer Security [TLS], HTTP over SSL, and HTTP Secure)
+is a communications protocol for secure communication over a computer network which is widely used on the Internet.
+HTTPS consists of communication over Hypertext Transfer Protocol (HTTP) within a connection encrypted by Transport Layer Security,
+or its predecessor, Secure Sockets Layer. The main motivation for HTTPS is authentication of the visited website
+and protection of the privacy and integrity of the exchanged data.
+Client-server applications use the TLS protocol to communicate across a network in a way designed to prevent eavesdropping and tampering.
+SSL 1.0, 2.0 and 3.0
+TLS 1.0 1999
+TLS 1.1 2006
+TLS 1.2 2008
+TLS 1.3 (draft)
+---------------------------------------------------------------------------------------------------------------------------
+REST
+look on rest.txt in this folder
+--------------------------------------------------------------------------------------------------------------------------
+WAR (Web application ARchive) files are used to distribute Java-based web applications.
+A WAR has the same file structure as a JAR file, which is a single compressed file that contains multiple files bundled inside it.
+WAR files are used to combine JSPs, servlets, Java class files, XML files, javascript libraries, JAR libraries, static web pages,
+and any other resources needed to run the application.
+WAR files are usually deployed in servlet containers, but can also be deployed to Java EE application servers.
+When a WAR file is deployed to a container, the container usually unpacks it to access the files and then launches the application.
+With servlet containers being the most prolific platform for Java web applications,
+WAR files are not only a Java spec standard, but a very common format for distributing Java applications and
+supported by a wide range of tools.
+WAR plain structure:
+example.war
+   WEB-INF
+           LIB
+           CLASSES
+           TAGS
+           web.xml
+   MEAT-INF
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Servlet API
+
+public interface javax.servlet.Servlet
+Defines methods that all servlets must implement.A servlet is a small Java program that runs within a Web
+Servlets receive and respond to requests from Web clients, usually across HTTP, the HyperText Transfer Protocol.
+To implement this interface, you can write a generic servlet that extends javax.servlet.GenericServlet or an HTTP servlet that
+extends javax.servlet.http.HttpServlet.
+
+public abstract class javax.servlet.GenericServlet  implements Servlet, ServletConfig, java.io.Serializable
+ makes writing servlets
+easier. It provides simple versions of the lifecycle methods
+<code>init</code> and <code>destroy</code> and of the methods
+in the <code>ServletConfig</code> interface. <code>GenericServlet</code>
+also implements the <code>log</code> method, declared in the
+<code>ServletContext</code> interface.
+
+public abstract class javax.servlet.http.HttpServlet extends GenericServlet
+Provides an abstract class to be subclassed to create an HTTP servlet suitable for a Web site.
 
 Session
 Session attributes
 
------------------------------------------------                  
+-----------------------------------------------
 
-https, TLS, SSL another ....
-Basic authorization
-
-REST
 MVC pattern
 write application that return current date for client by three ways: socket,servlet,spring mvc.
 write servlets stateful amd stateless(for example using cookies for shop cart)
 write spring mvc controllers
+spring security
 
 XML
 JSON
 what is better?
+http://www.yegor256.com/2015/11/16/json-vs-xml.html
 
 
 Server
@@ -237,3 +300,44 @@ Another Servers
 DB
 jvm params(http://www.javaspecialist.ru/2011/04/java-thread-stack.html)
 http://www.javaspecialist.ru/2011/04/permanent.html
+
+ear vs war
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
