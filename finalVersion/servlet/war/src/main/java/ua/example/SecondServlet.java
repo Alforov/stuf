@@ -13,7 +13,7 @@ import java.io.IOException;
 public class SecondServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
+        ServletContext servletContext = this.getServletContext();
         String attribute = (String) servletContext.getAttribute("from first");
         resp.getWriter().write(attribute);
     }

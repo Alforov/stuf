@@ -8,7 +8,21 @@ public class A extends B{
         return 1;
     }
 
-    public static void main(String[] args)  {
-        System.out.println(Long.valueOf("333"));
+    public static void main(String[] args) throws Throwable {
+        A a = new A();
+       a.foo(null);
+
+    }
+
+    public void foo(Integer s) {
+        System.out.println("Integer");
+    }
+
+  private strictfp void foo() {
+        System.out.println("Integer");
+    }
+
+    public void foo(char b){
+        System.out.println("two");
     }
 }
